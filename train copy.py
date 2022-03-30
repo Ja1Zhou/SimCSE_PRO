@@ -7,7 +7,8 @@ from typing import Optional, Union, List, Dict, Tuple
 import torch
 import collections
 import random
-os.environ["CUDA_VISIBLE_DEVICES"] = "2"
+os.environ["OMP_NUM_THREADS"] = "8"
+os.environ["CUDA_VISIBLE_DEVICES"] = "2,3"
 from datasets import load_dataset
 
 import transformers
