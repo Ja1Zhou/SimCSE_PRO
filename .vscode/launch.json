@@ -5,11 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Attach using Process Id",
+            "name": "Python: Attach",
             "type": "python",
             "request": "attach",
-            "processId": "${command:pickProcess}",
-            "justMyCode": false,
+            "justMyCode": true,
             "connect": {
                 "port": 5678,
                 "host": "127.0.0.1"

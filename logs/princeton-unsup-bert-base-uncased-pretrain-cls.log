@@ -1,0 +1,93 @@
+2022-04-18 12:59:41,388 : ***** Transfer task : STS12 *****
+
+
+/home/zhejian/SimCSE/./SentEval/senteval/sts.py:42: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify 'dtype=object' when creating the ndarray.
+  sent1 = np.array([s.split() for s in sent1])[not_empty_idx]
+/home/zhejian/SimCSE/./SentEval/senteval/sts.py:43: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify 'dtype=object' when creating the ndarray.
+  sent2 = np.array([s.split() for s in sent2])[not_empty_idx]
+2022-04-18 12:59:43,124 : MSRpar : pearson = 0.6306, spearman = 0.6426
+2022-04-18 12:59:43,895 : MSRvid : pearson = 0.8574, spearman = 0.8513
+2022-04-18 12:59:44,515 : SMTeuroparl : pearson = 0.5256, spearman = 0.6155
+2022-04-18 12:59:45,702 : surprise.OnWN : pearson = 0.7370, spearman = 0.6977
+2022-04-18 12:59:46,335 : surprise.SMTnews : pearson = 0.6551, spearman = 0.5809
+2022-04-18 12:59:46,338 : ALL : Pearson = 0.7284,             Spearman = 0.6605
+2022-04-18 12:59:46,338 : ALL (weighted average) : Pearson = 0.6986,             Spearman = 0.6943
+2022-04-18 12:59:46,338 : ALL (average) : Pearson = 0.6811,             Spearman = 0.6776
+
+2022-04-18 12:59:46,343 : ***** Transfer task : STS13 (-SMT) *****
+
+
+2022-04-18 12:59:46,912 : FNWN : pearson = 0.6220, spearman = 0.6409
+2022-04-18 12:59:47,773 : headlines : pearson = 0.7852, spearman = 0.7904
+2022-04-18 12:59:48,447 : OnWN : pearson = 0.8646, spearman = 0.8377
+2022-04-18 12:59:48,449 : ALL : Pearson = 0.8112,             Spearman = 0.8149
+2022-04-18 12:59:48,449 : ALL (weighted average) : Pearson = 0.7943,             Spearman = 0.7893
+2022-04-18 12:59:48,449 : ALL (average) : Pearson = 0.7573,             Spearman = 0.7563
+
+2022-04-18 12:59:48,452 : ***** Transfer task : STS14 *****
+
+
+2022-04-18 12:59:49,091 : deft-forum : pearson = 0.5920, spearman = 0.5762
+2022-04-18 12:59:49,795 : deft-news : pearson = 0.7875, spearman = 0.7516
+2022-04-18 12:59:50,768 : headlines : pearson = 0.7692, spearman = 0.7587
+2022-04-18 12:59:51,704 : images : pearson = 0.8154, spearman = 0.7784
+2022-04-18 12:59:52,657 : OnWN : pearson = 0.8793, spearman = 0.8508
+2022-04-18 12:59:53,903 : tweet-news : pearson = 0.7961, spearman = 0.7229
+2022-04-18 12:59:53,906 : ALL : Pearson = 0.7731,             Spearman = 0.7361
+2022-04-18 12:59:53,906 : ALL (weighted average) : Pearson = 0.7861,             Spearman = 0.7514
+2022-04-18 12:59:53,906 : ALL (average) : Pearson = 0.7733,             Spearman = 0.7398
+
+2022-04-18 12:59:53,911 : ***** Transfer task : STS15 *****
+
+
+2022-04-18 12:59:54,830 : answers-forums : pearson = 0.7721, spearman = 0.7765
+2022-04-18 12:59:55,770 : answers-students : pearson = 0.7317, spearman = 0.7350
+2022-04-18 12:59:56,637 : belief : pearson = 0.8152, spearman = 0.8333
+2022-04-18 12:59:57,650 : headlines : pearson = 0.8142, spearman = 0.8195
+2022-04-18 12:59:58,626 : images : pearson = 0.8470, spearman = 0.8617
+2022-04-18 12:59:58,628 : ALL : Pearson = 0.7895,             Spearman = 0.7972
+2022-04-18 12:59:58,628 : ALL (weighted average) : Pearson = 0.7966,             Spearman = 0.8053
+2022-04-18 12:59:58,628 : ALL (average) : Pearson = 0.7960,             Spearman = 0.8052
+
+2022-04-18 12:59:58,633 : ***** Transfer task : STS16 *****
+
+
+2022-04-18 12:59:59,051 : answer-answer : pearson = 0.6827, spearman = 0.6806
+2022-04-18 12:59:59,349 : headlines : pearson = 0.8009, spearman = 0.8183
+2022-04-18 12:59:59,728 : plagiarism : pearson = 0.8481, spearman = 0.8579
+2022-04-18 13:00:00,360 : postediting : pearson = 0.8488, spearman = 0.8623
+2022-04-18 13:00:00,636 : question-question : pearson = 0.7038, spearman = 0.7008
+2022-04-18 13:00:00,638 : ALL : Pearson = 0.7698,             Spearman = 0.7812
+2022-04-18 13:00:00,638 : ALL (weighted average) : Pearson = 0.7775,             Spearman = 0.7848
+2022-04-18 13:00:00,638 : ALL (average) : Pearson = 0.7769,             Spearman = 0.7840
+
+2022-04-18 13:00:00,640 : 
+
+***** Transfer task : STSBenchmark*****
+
+
+2022-04-18 13:00:10,697 : train : pearson = 0.7895, spearman = 0.7693
+2022-04-18 13:00:13,584 : dev : pearson = 0.8136, spearman = 0.8172
+2022-04-18 13:00:16,052 : test : pearson = 0.7733, spearman = 0.7652
+2022-04-18 13:00:16,060 : ALL : Pearson = 0.7916,             Spearman = 0.7806
+2022-04-18 13:00:16,060 : ALL (weighted average) : Pearson = 0.7911,             Spearman = 0.7770
+2022-04-18 13:00:16,060 : ALL (average) : Pearson = 0.7922,             Spearman = 0.7839
+
+2022-04-18 13:00:16,071 : 
+
+***** Transfer task : SICKRelatedness*****
+
+
+2022-04-18 13:00:22,503 : train : pearson = 0.7994, spearman = 0.7245
+2022-04-18 13:00:23,306 : dev : pearson = 0.7870, spearman = 0.7422
+2022-04-18 13:00:30,525 : test : pearson = 0.7916, spearman = 0.7186
+2022-04-18 13:00:30,530 : ALL : Pearson = 0.7950,             Spearman = 0.7224
+2022-04-18 13:00:30,530 : ALL (weighted average) : Pearson = 0.7949,             Spearman = 0.7224
+2022-04-18 13:00:30,530 : ALL (average) : Pearson = 0.7927,             Spearman = 0.7284
+
+------ test ------
++-------+-------+-------+-------+-------+--------------+-----------------+-------+
+| STS12 | STS13 | STS14 | STS15 | STS16 | STSBenchmark | SICKRelatedness |  Avg. |
++-------+-------+-------+-------+-------+--------------+-----------------+-------+
+| 66.05 | 81.49 | 73.61 | 79.72 | 78.12 |    76.52     |      71.86      | 75.34 |
++-------+-------+-------+-------+-------+--------------+-----------------+-------+
