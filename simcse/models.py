@@ -152,13 +152,13 @@ def cl_forward(cls,
         )
 
     # Pooling
-    pooler_output = cls.pooler(attention_mask, outputs)
+    pooler_output = cls.pooler(attention_mask, outputs)# Note that "cls" returns the raw hidden state of last layer [CLS] token
     pooler_output = pooler_output.view((batch_size, num_sent, pooler_output.size(-1))) # (bs, num_sent, hidden)
 
     # If using "cls", we add an extra MLP layer
     # (same as BERT's original implementation) over the representation.
     if cls.pooler_type == "cls":
-        pooler_output = cls.mlp(pooler_output)
+        pooler_output = cls.mlp(pooler_output)# Unknown intention of training a MLP layer during training while discarding it during evaluation
 
     # Separate representation
     z1, z2 = pooler_output[:,0], pooler_output[:,1]
