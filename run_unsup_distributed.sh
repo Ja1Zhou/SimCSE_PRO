@@ -19,7 +19,7 @@ python -m torch.distributed.launch \
     --master_port $PORT_ID train.py \
     --model_name_or_path bert-base-uncased \
     --train_file data/wiki1m_for_simcse.txt \
-    --output_dir result/princeton-unsup-bert \
+    --output_dir result/reproduce-unsup-bert-cls-before-pooler \
     --num_train_epochs 1 \
     --per_device_train_batch_size 64 \
     --learning_rate 3e-5 \
@@ -28,7 +28,7 @@ python -m torch.distributed.launch \
     --metric_for_best_model stsb_spearman \
     --load_best_model_at_end \
     --eval_steps 125 \
-    --pooler_type cls \
+    --pooler_type cls_before_pooler \
     --mlp_only_train \
     --overwrite_output_dir \
     --temp 0.05 \
