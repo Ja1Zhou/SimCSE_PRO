@@ -28,7 +28,7 @@ python -m torch.distributed.launch \
     --metric_for_best_model stsb_spearman \
     --load_best_model_at_end \
     --eval_steps 125 \
-    --pooler_type cls_before_pooler \
+    --pooler_type cls \
     --mlp_only_train \
     --overwrite_output_dir \
     --temp 0.05 \
