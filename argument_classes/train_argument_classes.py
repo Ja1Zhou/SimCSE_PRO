@@ -1,8 +1,4 @@
 import torch
-from transformers import (
-    MODEL_FOR_MASKED_LM_MAPPING,
-    TrainingArguments,
-)
 from transformers.file_utils import cached_property, torch_required, is_torch_tpu_available
 from dataclasses import dataclass, field
 from typing import Optional, Union, List, Dict, Tuple
