@@ -1,0 +1,211 @@
+2022-04-30 02:12:53,143 : ***** Transfer task : STS12 *****
+
+
+/home/zhejian/SimCSE/./SentEval/senteval/sts.py:42: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify 'dtype=object' when creating the ndarray.
+  sent1 = np.array([s.split() for s in sent1])[not_empty_idx]
+/home/zhejian/SimCSE/./SentEval/senteval/sts.py:43: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify 'dtype=object' when creating the ndarray.
+  sent2 = np.array([s.split() for s in sent2])[not_empty_idx]
+2022-04-30 02:12:53,892 : MSRpar : pearson = 0.6180, spearman = 0.6225
+2022-04-30 02:12:54,262 : MSRvid : pearson = 0.8614, spearman = 0.8542
+2022-04-30 02:12:54,551 : SMTeuroparl : pearson = 0.5404, spearman = 0.6403
+2022-04-30 02:12:55,066 : surprise.OnWN : pearson = 0.7412, spearman = 0.6871
+2022-04-30 02:12:55,403 : surprise.SMTnews : pearson = 0.6456, spearman = 0.5986
+2022-04-30 02:12:55,407 : ALL : Pearson = 0.7373,             Spearman = 0.6522
+2022-04-30 02:12:55,407 : ALL (weighted average) : Pearson = 0.6985,             Spearman = 0.6936
+2022-04-30 02:12:55,407 : ALL (average) : Pearson = 0.6813,             Spearman = 0.6805
+
+2022-04-30 02:12:55,410 : ***** Transfer task : STS13 (-SMT) *****
+
+
+2022-04-30 02:12:55,655 : FNWN : pearson = 0.6016, spearman = 0.6394
+2022-04-30 02:12:56,069 : headlines : pearson = 0.7838, spearman = 0.7864
+2022-04-30 02:12:56,385 : OnWN : pearson = 0.8453, spearman = 0.8265
+2022-04-30 02:12:56,387 : ALL : Pearson = 0.7977,             Spearman = 0.8028
+2022-04-30 02:12:56,387 : ALL (weighted average) : Pearson = 0.7839,             Spearman = 0.7829
+2022-04-30 02:12:56,387 : ALL (average) : Pearson = 0.7436,             Spearman = 0.7508
+
+2022-04-30 02:12:56,388 : ***** Transfer task : STS14 *****
+
+
+2022-04-30 02:12:56,702 : deft-forum : pearson = 0.5809, spearman = 0.5705
+2022-04-30 02:12:56,993 : deft-news : pearson = 0.7931, spearman = 0.7590
+2022-04-30 02:12:57,434 : headlines : pearson = 0.7813, spearman = 0.7673
+2022-04-30 02:12:57,870 : images : pearson = 0.8252, spearman = 0.7976
+2022-04-30 02:12:58,326 : OnWN : pearson = 0.8657, spearman = 0.8466
+2022-04-30 02:12:58,874 : tweet-news : pearson = 0.7886, spearman = 0.7192
+2022-04-30 02:12:58,877 : ALL : Pearson = 0.7637,             Spearman = 0.7230
+2022-04-30 02:12:58,877 : ALL (weighted average) : Pearson = 0.7853,             Spearman = 0.7553
+2022-04-30 02:12:58,877 : ALL (average) : Pearson = 0.7725,             Spearman = 0.7434
+
+2022-04-30 02:12:58,884 : ***** Transfer task : STS15 *****
+
+
+2022-04-30 02:12:59,424 : answers-forums : pearson = 0.7723, spearman = 0.7797
+2022-04-30 02:12:59,886 : answers-students : pearson = 0.7182, spearman = 0.7160
+2022-04-30 02:13:00,219 : belief : pearson = 0.8152, spearman = 0.8349
+2022-04-30 02:13:00,701 : headlines : pearson = 0.8064, spearman = 0.8095
+2022-04-30 02:13:01,128 : images : pearson = 0.8589, spearman = 0.8706
+2022-04-30 02:13:01,130 : ALL : Pearson = 0.7997,             Spearman = 0.8045
+2022-04-30 02:13:01,130 : ALL (weighted average) : Pearson = 0.7943,             Spearman = 0.8009
+2022-04-30 02:13:01,130 : ALL (average) : Pearson = 0.7942,             Spearman = 0.8021
+
+2022-04-30 02:13:01,133 : ***** Transfer task : STS16 *****
+
+
+2022-04-30 02:13:01,351 : answer-answer : pearson = 0.7072, spearman = 0.7089
+2022-04-30 02:13:01,505 : headlines : pearson = 0.7831, spearman = 0.7947
+2022-04-30 02:13:01,689 : plagiarism : pearson = 0.8405, spearman = 0.8456
+2022-04-30 02:13:01,950 : postediting : pearson = 0.8580, spearman = 0.8787
+2022-04-30 02:13:02,096 : question-question : pearson = 0.6575, spearman = 0.6566
+2022-04-30 02:13:02,098 : ALL : Pearson = 0.7602,             Spearman = 0.7679
+2022-04-30 02:13:02,098 : ALL (weighted average) : Pearson = 0.7713,             Spearman = 0.7792
+2022-04-30 02:13:02,098 : ALL (average) : Pearson = 0.7693,             Spearman = 0.7769
+
+2022-04-30 02:13:02,100 : 
+
+***** Transfer task : STSBenchmark*****
+
+
+2022-04-30 02:13:06,395 : train : pearson = 0.7999, spearman = 0.7760
+2022-04-30 02:13:07,613 : dev : pearson = 0.8224, spearman = 0.8215
+2022-04-30 02:13:08,697 : test : pearson = 0.7850, spearman = 0.7726
+2022-04-30 02:13:08,702 : ALL : Pearson = 0.8018,             Spearman = 0.7864
+2022-04-30 02:13:08,702 : ALL (weighted average) : Pearson = 0.8014,             Spearman = 0.7834
+2022-04-30 02:13:08,702 : ALL (average) : Pearson = 0.8024,             Spearman = 0.7900
+
+2022-04-30 02:13:08,713 : 
+
+***** Transfer task : SICKRelatedness*****
+
+
+2022-04-30 02:13:11,605 : train : pearson = 0.7692, spearman = 0.6928
+2022-04-30 02:13:11,941 : dev : pearson = 0.7637, spearman = 0.7089
+2022-04-30 02:13:15,041 : test : pearson = 0.7639, spearman = 0.6848
+2022-04-30 02:13:15,052 : ALL : Pearson = 0.7664,             Spearman = 0.6896
+2022-04-30 02:13:15,052 : ALL (weighted average) : Pearson = 0.7663,             Spearman = 0.6896
+2022-04-30 02:13:15,052 : ALL (average) : Pearson = 0.7656,             Spearman = 0.6955
+
+2022-04-30 02:13:15,065 : ***** Transfer task : MR *****
+
+
+2022-04-30 02:13:15,173 : Generating sentence embeddings
+2022-04-30 02:13:19,895 : Generated sentence embeddings
+2022-04-30 02:13:19,896 : Training pytorch-MLP-nhid0-adam-bs64 with (inner) 10-fold cross-validation
+2022-04-30 02:17:06,126 : Best param found at split 1: l2reg = 0.01                 with score 81.17
+2022-04-30 02:20:36,257 : Best param found at split 2: l2reg = 0.001                 with score 81.17
+2022-04-30 02:24:07,537 : Best param found at split 3: l2reg = 0.01                 with score 81.27
+2022-04-30 02:27:39,319 : Best param found at split 4: l2reg = 0.01                 with score 81.3
+2022-04-30 02:31:20,316 : Best param found at split 5: l2reg = 1e-05                 with score 81.17
+2022-04-30 02:34:53,593 : Best param found at split 6: l2reg = 0.01                 with score 81.21
+2022-04-30 02:38:15,680 : Best param found at split 7: l2reg = 0.01                 with score 80.99
+2022-04-30 02:41:48,968 : Best param found at split 8: l2reg = 0.0001                 with score 81.09
+2022-04-30 02:45:25,879 : Best param found at split 9: l2reg = 0.001                 with score 81.19
+2022-04-30 02:49:02,955 : Best param found at split 10: l2reg = 0.01                 with score 80.97
+2022-04-30 02:49:07,839 : Dev acc : 81.15 Test acc : 80.29
+
+2022-04-30 02:49:07,854 : ***** Transfer task : CR *****
+
+
+2022-04-30 02:49:07,864 : Generating sentence embeddings
+2022-04-30 02:49:09,171 : Generated sentence embeddings
+2022-04-30 02:49:09,171 : Training pytorch-MLP-nhid0-adam-bs64 with (inner) 10-fold cross-validation
+2022-04-30 02:50:21,614 : Best param found at split 1: l2reg = 0.01                 with score 86.25
+2022-04-30 02:51:38,760 : Best param found at split 2: l2reg = 0.01                 with score 86.55
+2022-04-30 02:52:57,438 : Best param found at split 3: l2reg = 1e-05                 with score 86.4
+2022-04-30 02:54:15,107 : Best param found at split 4: l2reg = 0.0001                 with score 86.4
+2022-04-30 02:55:41,336 : Best param found at split 5: l2reg = 0.001                 with score 86.52
+2022-04-30 02:57:03,358 : Best param found at split 6: l2reg = 1e-05                 with score 86.46
+2022-04-30 02:58:31,223 : Best param found at split 7: l2reg = 0.01                 with score 86.43
+2022-04-30 02:59:49,561 : Best param found at split 8: l2reg = 0.001                 with score 85.99
+2022-04-30 03:01:09,587 : Best param found at split 9: l2reg = 0.01                 with score 86.31
+2022-04-30 03:02:32,654 : Best param found at split 10: l2reg = 0.01                 with score 86.52
+2022-04-30 03:02:34,811 : Dev acc : 86.38 Test acc : 85.67
+
+2022-04-30 03:02:34,816 : ***** Transfer task : MPQA *****
+
+
+2022-04-30 03:02:34,907 : Generating sentence embeddings
+2022-04-30 03:02:36,995 : Generated sentence embeddings
+2022-04-30 03:02:36,996 : Training pytorch-MLP-nhid0-adam-bs64 with (inner) 10-fold cross-validation
+2022-04-30 03:05:59,409 : Best param found at split 1: l2reg = 0.001                 with score 89.0
+2022-04-30 03:09:27,330 : Best param found at split 2: l2reg = 0.0001                 with score 89.11
+2022-04-30 03:13:00,021 : Best param found at split 3: l2reg = 0.01                 with score 88.66
+2022-04-30 03:16:32,039 : Best param found at split 4: l2reg = 1e-05                 with score 88.65
+2022-04-30 03:19:51,962 : Best param found at split 5: l2reg = 0.001                 with score 88.93
+2022-04-30 03:23:23,021 : Best param found at split 6: l2reg = 0.01                 with score 88.92
+2022-04-30 03:26:50,033 : Best param found at split 7: l2reg = 0.001                 with score 88.96
+2022-04-30 03:30:20,038 : Best param found at split 8: l2reg = 0.001                 with score 88.93
+2022-04-30 03:33:46,205 : Best param found at split 9: l2reg = 0.001                 with score 88.94
+2022-04-30 03:37:14,194 : Best param found at split 10: l2reg = 0.001                 with score 88.76
+2022-04-30 03:37:19,749 : Dev acc : 88.89 Test acc : 88.53
+
+2022-04-30 03:37:19,753 : ***** Transfer task : SUBJ *****
+
+
+2022-04-30 03:37:19,791 : Generating sentence embeddings
+2022-04-30 03:37:24,495 : Generated sentence embeddings
+2022-04-30 03:37:24,495 : Training pytorch-MLP-nhid0-adam-bs64 with (inner) 10-fold cross-validation
+2022-04-30 03:40:48,753 : Best param found at split 1: l2reg = 0.001                 with score 94.93
+2022-04-30 03:44:19,302 : Best param found at split 2: l2reg = 1e-05                 with score 94.83
+2022-04-30 03:47:43,535 : Best param found at split 3: l2reg = 0.001                 with score 94.91
+2022-04-30 03:51:16,083 : Best param found at split 4: l2reg = 0.001                 with score 94.76
+2022-04-30 03:54:44,685 : Best param found at split 5: l2reg = 0.001                 with score 95.06
+2022-04-30 03:58:09,321 : Best param found at split 6: l2reg = 0.0001                 with score 94.79
+2022-04-30 04:02:48,521 : Best param found at split 7: l2reg = 0.001                 with score 95.01
+2022-04-30 04:06:21,671 : Best param found at split 8: l2reg = 0.001                 with score 95.01
+2022-04-30 04:09:42,106 : Best param found at split 9: l2reg = 0.001                 with score 95.01
+2022-04-30 04:14:15,018 : Best param found at split 10: l2reg = 0.001                 with score 94.7
+2022-04-30 04:14:21,968 : Dev acc : 94.9 Test acc : 94.55
+
+2022-04-30 04:14:22,000 : ***** Transfer task : SST Binary classification *****
+
+
+2022-04-30 04:14:22,422 : Computing embedding for train
+2022-04-30 04:14:45,938 : Computed train embeddings
+2022-04-30 04:14:45,938 : Computing embedding for dev
+2022-04-30 04:14:46,323 : Computed dev embeddings
+2022-04-30 04:14:46,323 : Computing embedding for test
+2022-04-30 04:14:47,213 : Computed test embeddings
+2022-04-30 04:14:47,214 : Training pytorch-MLP-nhid0-adam-bs64 with standard validation..
+2022-04-30 04:19:28,261 : [('reg:1e-05', 84.17), ('reg:0.0001', 84.17), ('reg:0.001', 84.29), ('reg:0.01', 83.72)]
+2022-04-30 04:19:28,261 : Validation : best param found is reg = 0.001 with score             84.29
+2022-04-30 04:19:28,262 : Evaluating...
+2022-04-30 04:20:49,570 : 
+Dev acc : 84.29 Test acc : 84.73 for             SST Binary classification
+
+2022-04-30 04:20:49,790 : ***** Transfer task : TREC *****
+
+
+2022-04-30 04:20:51,794 : Computed train embeddings
+2022-04-30 04:20:51,953 : Computed test embeddings
+2022-04-30 04:20:51,955 : Training pytorch-MLP-nhid0-adam-bs64 with 10-fold cross-validation
+2022-04-30 04:25:35,696 : [('reg:1e-05', 83.03), ('reg:0.0001', 83.07), ('reg:0.001', 82.96), ('reg:0.01', 82.57)]
+2022-04-30 04:25:35,697 : Cross-validation : best param found is reg = 0.0001             with score 83.07
+2022-04-30 04:25:35,697 : Evaluating...
+2022-04-30 04:25:42,843 : 
+Dev acc : 83.07 Test acc : 87.2             for TREC
+
+2022-04-30 04:25:42,850 : ***** Transfer task : MRPC *****
+
+
+2022-04-30 04:25:42,893 : Computing embedding for train
+2022-04-30 04:25:46,845 : Computed train embeddings
+2022-04-30 04:25:46,845 : Computing embedding for test
+2022-04-30 04:25:48,807 : Computed test embeddings
+2022-04-30 04:25:48,840 : Training pytorch-MLP-nhid0-adam-bs64 with 10-fold cross-validation
+2022-04-30 04:28:18,088 : [('reg:1e-05', 74.97), ('reg:0.0001', 74.97), ('reg:0.001', 75.12), ('reg:0.01', 75.2)]
+2022-04-30 04:28:18,088 : Cross-validation : best param found is reg = 0.01             with score 75.2
+2022-04-30 04:28:18,088 : Evaluating...
+2022-04-30 04:28:21,955 : Dev acc : 75.2 Test acc 72.93; Test F1 80.58 for MRPC.
+
+------ test ------
++-------+-------+-------+-------+-------+--------------+-----------------+-------+
+| STS12 | STS13 | STS14 | STS15 | STS16 | STSBenchmark | SICKRelatedness |  Avg. |
++-------+-------+-------+-------+-------+--------------+-----------------+-------+
+| 65.22 | 80.28 | 72.30 | 80.45 | 76.79 |    77.26     |      68.48      | 74.40 |
++-------+-------+-------+-------+-------+--------------+-----------------+-------+
++-------+-------+-------+-------+-------+-------+-------+-------+
+|   MR  |   CR  |  SUBJ |  MPQA |  SST2 |  TREC |  MRPC |  Avg. |
++-------+-------+-------+-------+-------+-------+-------+-------+
+| 80.29 | 85.67 | 94.55 | 88.53 | 84.73 | 87.20 | 72.93 | 84.84 |
++-------+-------+-------+-------+-------+-------+-------+-------+
