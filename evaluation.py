@@ -46,10 +46,11 @@ def main():
     parser = HfArgumentParser((ModelArguments, EvalArguments))
     model_args, args = parser.parse_args_into_dataclasses()
     # Load transformers' model checkpoint
-    model = AutoModel.from_pretrained(args.model_name_or_path)
-    tokenizer = AutoTokenizer.from_pretrained(args.model_name_or_path)
+    model = AutoModel.from_pretrained(model_args.model_name_or_path)
+    tokenizer = AutoTokenizer.from_pretrained(model_args.model_name_or_path)
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model = model.to(device)
+    model.eval()
     
     # Set up the tasks
     if args.task_set == 'sts':
