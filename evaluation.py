@@ -1,16 +1,11 @@
 import sys
-import io, os
-import numpy as np
 import logging
-import argparse
 from prettytable import PrettyTable
 import torch
-import transformers
-from transformers import AutoModel, AutoTokenizer
-
+from transformers import AutoModel, AutoTokenizer, HfArgumentParser
 # Set up logger
 logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
-
+from argument_classes.eval_argument_classes import ModelArguments, EvalArguments
 # Set PATHs
 PATH_TO_SENTEVAL = './SentEval'
 PATH_TO_DATA = './SentEval/data'
@@ -26,29 +21,30 @@ def print_table(task_names, scores):
     print(tb)
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--model_name_or_path", type=str, 
-            help="Transformers' model name or path")
-    parser.add_argument("--pooler", type=str, 
-            choices=['cls', 'cls_before_pooler', 'avg', 'avg_top2', 'avg_first_last'], 
-            default='cls', 
-            help="Which pooler to use")
-    parser.add_argument("--mode", type=str, 
-            choices=['dev', 'test', 'fasttest'],
-            default='test', 
-            help="What evaluation mode to use (dev: fast mode, dev results; test: full mode, test results); fasttest: fast mode, test results")
-    parser.add_argument("--task_set", type=str, 
-            choices=['sts', 'transfer', 'full', 'na'],
-            default='sts',
-            help="What set of tasks to evaluate on. If not 'na', this will override '--tasks'")
-    parser.add_argument("--tasks", type=str, nargs='+', 
-            default=['STS12', 'STS13', 'STS14', 'STS15', 'STS16',
-                     'MR', 'CR', 'MPQA', 'SUBJ', 'SST2', 'TREC', 'MRPC',
-                     'SICKRelatedness', 'STSBenchmark'], 
-            help="Tasks to evaluate on. If '--task_set' is specified, this will be overridden")
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument("--model_name_or_path", type=str, 
+    #         help="Transformers' model name or path")
+    # parser.add_argument("--pooler", type=str, 
+    #         choices=['cls', 'cls_before_pooler', 'avg', 'avg_top2', 'avg_first_last'], 
+    #         default='cls', 
+    #         help="Which pooler to use")
+    # parser.add_argument("--mode", type=str, 
+    #         choices=['dev', 'test', 'fasttest'],
+    #         default='test', 
+    #         help="What evaluation mode to use (dev: fast mode, dev results; test: full mode, test results); fasttest: fast mode, test results")
+    # parser.add_argument("--task_set", type=str, 
+    #         choices=['sts', 'transfer', 'full', 'na'],
+    #         default='sts',
+    #         help="What set of tasks to evaluate on. If not 'na', this will override '--tasks'")
+    # parser.add_argument("--tasks", type=str, nargs='+', 
+    #         default=['STS12', 'STS13', 'STS14', 'STS15', 'STS16',
+    #                  'MR', 'CR', 'MPQA', 'SUBJ', 'SST2', 'TREC', 'MRPC',
+    #                  'SICKRelatedness', 'STSBenchmark'], 
+    #         help="Tasks to evaluate on. If '--task_set' is specified, this will be overridden")
     
-    args = parser.parse_args()
-    
+    # args = parser.parse_args()
+    parser = HfArgumentParser((ModelArguments, EvalArguments))
+    model_args, args = parser.parse_args_into_dataclasses()
     # Load transformers' model checkpoint
     model = AutoModel.from_pretrained(args.model_name_or_path)
     tokenizer = AutoTokenizer.from_pretrained(args.model_name_or_path)
@@ -117,19 +113,19 @@ def main():
             hidden_states = outputs.hidden_states
 
         # Apply different poolers
-        if args.pooler == 'cls':
+        if model_args.pooler_type == 'cls':
             # There is a linear+activation layer after CLS representation
             return pooler_output.cpu()
-        elif args.pooler == 'cls_before_pooler':
+        elif model_args.pooler_type == 'cls_before_pooler':
             return last_hidden[:, 0].cpu()
-        elif args.pooler == "avg":
+        elif model_args.pooler_type == "avg":
             return ((last_hidden * batch['attention_mask'].unsqueeze(-1)).sum(1) / batch['attention_mask'].sum(-1).unsqueeze(-1)).cpu()
-        elif args.pooler == "avg_first_last":
+        elif model_args.pooler_type == "avg_first_last":
             first_hidden = hidden_states[0]
             last_hidden = hidden_states[-1]
             pooled_result = ((first_hidden + last_hidden) / 2.0 * batch['attention_mask'].unsqueeze(-1)).sum(1) / batch['attention_mask'].sum(-1).unsqueeze(-1)
             return pooled_result.cpu()
-        elif args.pooler == "avg_top2":
+        elif model_args.pooler_type == "avg_top2":
             second_last_hidden = hidden_states[-2]
             last_hidden = hidden_states[-1]
             pooled_result = ((last_hidden + second_last_hidden) / 2.0 * batch['attention_mask'].unsqueeze(-1)).sum(1) / batch['attention_mask'].sum(-1).unsqueeze(-1)
