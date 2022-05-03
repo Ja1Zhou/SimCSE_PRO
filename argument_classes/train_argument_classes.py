@@ -89,12 +89,6 @@ class ModelArguments:
             "help": "Use MLP only during training"
         }
     )
-    ner_model_name_or_path: str = field(
-        default="huggingface-course/bert-finetuned-ner",
-        metadata={
-            "help": "The name or path of the NER model to use"
-        }
-    )
 
 
 @dataclass
@@ -146,10 +140,6 @@ class DataTrainingArguments:
     mlm_probability: float = field(
         default=0.15, 
         metadata={"help": "Ratio of tokens to mask for MLM (only effective if --do_mlm)"}
-    )
-    zzj_custom_train_data: bool = field(
-        default=False,
-        metadata={"help": "Whether to use preprocessed data for training. This affects the preprocessing logics."}
     )
     def __post_init__(self):
         if self.dataset_name is None and self.train_file is None and self.validation_file is None:

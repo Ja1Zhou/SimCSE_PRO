@@ -1,6 +1,5 @@
 from dataclasses import dataclass, field
 from typing import Optional, Union, List, Dict, Tuple
-from transformers import HfArgumentParser
 @dataclass
 class ModelArguments:
     """
