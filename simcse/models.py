@@ -138,7 +138,7 @@ def cl_forward(cls,
 
     # MLM auxiliary objective
     if mlm_input_ids is not None:
-        mlm_input_ids = mlm_input_ids.view((-1, mlm_input_ids.size(-1)))
+        mlm_input_ids = mlm_input_ids.view((-1, mlm_input_ids.size(-1))) # bs * num_sent, seq_len
         mlm_outputs = encoder(
             mlm_input_ids,
             attention_mask=attention_mask,
@@ -149,7 +149,7 @@ def cl_forward(cls,
             output_attentions=output_attentions,
             output_hidden_states=True if cls.model_args.pooler_type in ['avg_top2', 'avg_first_last'] else False,
             return_dict=True,
-        )
+        ) #  (bs * num_sent, seq_len, hidden_size)
 
     # Pooling
     pooler_output = cls.pooler(attention_mask, outputs)# Note that "cls" returns the raw hidden state of last layer [CLS] token
@@ -213,8 +213,8 @@ def cl_forward(cls,
 
     # Calculate loss for MLM
     if mlm_outputs is not None and mlm_labels is not None:
-        mlm_labels = mlm_labels.view(-1, mlm_labels.size(-1))
-        prediction_scores = cls.lm_head(mlm_outputs.last_hidden_state)
+        mlm_labels = mlm_labels.view(-1, mlm_labels.size(-1)) # bs * num_sent, seq_len
+        prediction_scores = cls.lm_head(mlm_outputs.last_hidden_state) # bs * num_sent, seq_len, vocab_size
         masked_lm_loss = loss_fct(prediction_scores.view(-1, cls.config.vocab_size), mlm_labels.view(-1))
         loss = loss + cls.model_args.mlm_weight * masked_lm_loss
 
