@@ -114,7 +114,7 @@ class DataTrainingArguments:
         },
     )
     preprocessing_num_workers: Optional[int] = field(
-        default=None,
+        default=4,
         metadata={"help": "The number of processes to use for the preprocessing."},
     )
 
@@ -140,6 +140,10 @@ class DataTrainingArguments:
     mlm_probability: float = field(
         default=0.15, 
         metadata={"help": "Ratio of tokens to mask for MLM (only effective if --do_mlm)"}
+    )
+    batch_size: int = field(
+        default=64,
+        metadata={"help": "Batch size during dataset mapping."},
     )
     def __post_init__(self):
         if self.dataset_name is None and self.train_file is None and self.validation_file is None:
