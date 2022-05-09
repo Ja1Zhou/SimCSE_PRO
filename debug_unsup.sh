@@ -6,7 +6,7 @@
 export CUDA_VISIBLE_DEVICES=7
 python -m debugpy --listen 127.0.0.1:5678 --wait-for-client train.py \
     --model_name_or_path bert-base-uncased \
-    --train_file data/wiki1m_for_simcse.txt \
+    --train_file data/nli_for_simcse.csv \
     --output_dir result/debug-unsup-bert \
     --num_train_epochs 1 \
     --per_device_train_batch_size 2 \
@@ -20,6 +20,7 @@ python -m debugpy --listen 127.0.0.1:5678 --wait-for-client train.py \
     --mlp_only_train \
     --overwrite_output_dir \
     --temp 0.05 \
+    --force_unsup \
     --do_train \
     --do_eval \
     --fp16 \

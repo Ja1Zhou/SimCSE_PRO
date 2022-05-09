@@ -145,6 +145,10 @@ class DataTrainingArguments:
         default=64,
         metadata={"help": "Batch size during dataset mapping."},
     )
+    force_unsup: bool = field(
+        default=False,
+        metadata={"help": "Whether to force unsupervised style of training."},
+    )
     def __post_init__(self):
         if self.dataset_name is None and self.train_file is None and self.validation_file is None:
             raise ValueError("Need either a dataset name or a training/validation file.")

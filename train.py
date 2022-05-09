@@ -4,7 +4,7 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional, Union, List, Dict, Tuple
 import torch
-from datasets import load_dataset
+from datasets import load_dataset, Dataset
 import glob
 import transformers
 from transformers import (
@@ -166,6 +166,7 @@ def main():
 
     # Prepare features
     column_names = datasets["train"].column_names
+    datasets = datasets["train"]
     sent2_cname = None
     if len(column_names) == 2:
         # Pair datasets
@@ -182,7 +183,13 @@ def main():
         sent1_cname = column_names[0]
     else:
         raise NotImplementedError
-
+    if data_args.force_unsup:
+        new_dataset_dict = {sent0_cname:[]}
+        for column in column_names:
+            new_dataset_dict[sent0_cname] += datasets[column]
+        datasets = Dataset.from_dict(new_dataset_dict)
+        sent2_cname = None
+        sent1_cname = sent0_cname
     def prepare_features(examples):
         # padding = longest (default)
         #   If no sentence in the batch exceed the max length, then use
@@ -227,12 +234,12 @@ def main():
         return features
 
     if training_args.do_train:
-        train_dataset = datasets["train"].map(
+        train_dataset = datasets.map(
             prepare_features,
             batched=True,
             batch_size=data_args.batch_size,
             num_proc=data_args.preprocessing_num_workers,
-            remove_columns=column_names,
+            remove_columns=datasets.column_names,
             load_from_cache_file=not data_args.overwrite_cache,
         )
 
