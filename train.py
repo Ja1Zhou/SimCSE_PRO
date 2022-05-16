@@ -1,45 +1,33 @@
-import logging
-import os
-import sys
-from dataclasses import dataclass, field
-from typing import Optional, Union, List, Dict, Tuple
-import torch
+import logging, os, hydra
+from types import SimpleNamespace
+from collections import namedtuple
+import glob, transformers, importlib, math
 from datasets import load_dataset, Dataset
-import glob
-import transformers
 from transformers import (
     CONFIG_MAPPING,
     MODEL_FOR_MASKED_LM_MAPPING,
     AutoConfig,
-    AutoModelForMaskedLM,
     AutoTokenizer,
-    HfArgumentParser,
+    TrainingArguments,
     default_data_collator,
     set_seed,
     BertForPreTraining,
+    AdamW,
+    get_linear_schedule_with_warmup
 )
-from transformers.tokenization_utils_base import PaddingStrategy, PreTrainedTokenizerBase
 from transformers.trainer_utils import is_main_process
-from simcse.models import RobertaForCL, BertForCL
-from simcse.trainers import CLTrainer
-from argument_classes.train_argument_classes import ModelArguments, DataTrainingArguments, OurTrainingArguments
 logger = logging.getLogger(__name__)
 MODEL_CONFIG_CLASSES = list(MODEL_FOR_MASKED_LM_MAPPING.keys())
 MODEL_TYPES = tuple(conf.model_type for conf in MODEL_CONFIG_CLASSES)
-
-def main():
-    # See all possible arguments in src/transformers/training_args.py
-    # or by passing the --help flag to this script.
-    # We now keep distinct sets of args, for a cleaner separation of concerns.
-
-    parser = HfArgumentParser((ModelArguments, DataTrainingArguments, OurTrainingArguments))
-    if len(sys.argv) == 2 and sys.argv[1].endswith(".json"):
-        # If we pass only one argument to the script and it's the path to a json file,
-        # let's parse it to get our arguments.
-        model_args, data_args, training_args = parser.parse_json_file(json_file=os.path.abspath(sys.argv[1]))
-    else:
-        model_args, data_args, training_args = parser.parse_args_into_dataclasses()
-
+@hydra.main(config_path="configs", config_name="default")
+def main(cfg):
+    # ModelArgs = namedtuple("ModelArgs", cfg.model_args.keys(),defaults=[None])
+    model_args = SimpleNamespace(**cfg.model_args)
+    # DataArgs = namedtuple("DataArgs", cfg.data_args.keys(),defaults=[None])
+    data_args = SimpleNamespace(**cfg.data_args)
+    # TrainerArgs = namedtuple("TrainerArgs", cfg.trainer_args.keys(),defaults=[None])
+    trainer_args = SimpleNamespace(**cfg.trainer_args)
+    training_args = TrainingArguments(**cfg.training_args)
     if (
         os.path.exists(training_args.output_dir)
         and os.listdir(training_args.output_dir)
@@ -102,67 +90,46 @@ def main():
     # Distributed training:
     # The .from_pretrained methods guarantee that only one local process can concurrently
     # download model & vocab.
-    config_kwargs = {
-        "cache_dir": model_args.cache_dir,
-        "revision": model_args.model_revision,
-        "use_auth_token": True if model_args.use_auth_token else None,
-    }
-    if model_args.config_name:
-        config = AutoConfig.from_pretrained(model_args.config_name, **config_kwargs)
-    elif model_args.model_name_or_path:
-        config = AutoConfig.from_pretrained(model_args.model_name_or_path, **config_kwargs)
+    # config_kwargs = {
+    #     "cache_dir": model_args.cache_dir,
+    #     "revision": model_args.model_revision,
+    #     "use_auth_token": True if model_args.use_auth_token else None,
+    # }
+    # if model_args.config_name:
+    #     config = AutoConfig.from_pretrained(model_args.config_name)
+    if model_args.model_name_or_path:
+        config = AutoConfig.from_pretrained(model_args.model_name_or_path)
     else:
         config = CONFIG_MAPPING[model_args.model_type]()
         logger.warning("You are instantiating a new config instance from scratch.")
 
-    tokenizer_kwargs = {
-        "cache_dir": model_args.cache_dir,
-        "use_fast": model_args.use_fast_tokenizer,
-        "revision": model_args.model_revision,
-        "use_auth_token": True if model_args.use_auth_token else None,
-    }
-    if model_args.tokenizer_name:
-        tokenizer = AutoTokenizer.from_pretrained(model_args.tokenizer_name, **tokenizer_kwargs)
-    elif model_args.model_name_or_path:
-        tokenizer = AutoTokenizer.from_pretrained(model_args.model_name_or_path, **tokenizer_kwargs)
+    # tokenizer_kwargs = {
+    #     "cache_dir": model_args.cache_dir,
+    #     "use_fast": model_args.use_fast_tokenizer,
+    #     "revision": model_args.model_revision,
+    #     "use_auth_token": True if model_args.use_auth_token else None,
+    # }
+    # if model_args.tokenizer_name:
+    #     tokenizer = AutoTokenizer.from_pretrained(model_args.tokenizer_name)
+    if model_args.model_name_or_path:
+        tokenizer = AutoTokenizer.from_pretrained(model_args.model_name_or_path)
     else:
         raise ValueError(
             "You are instantiating a new tokenizer from scratch. This is not supported by this script."
             "You can do it from another script, save it, and load it from here, using --tokenizer_name."
         )
-
-    if model_args.model_name_or_path:
-        if 'roberta' in model_args.model_name_or_path:
-            model = RobertaForCL.from_pretrained(
-                model_args.model_name_or_path,
-                from_tf=bool(".ckpt" in model_args.model_name_or_path),
-                config=config,
-                cache_dir=model_args.cache_dir,
-                revision=model_args.model_revision,
-                use_auth_token=True if model_args.use_auth_token else None,
-                model_args=model_args                  
-            )
-        elif 'bert' in model_args.model_name_or_path:
-            model = BertForCL.from_pretrained(
-                model_args.model_name_or_path,
-                from_tf=bool(".ckpt" in model_args.model_name_or_path),
-                config=config,
-                cache_dir=model_args.cache_dir,
-                revision=model_args.model_revision,
-                use_auth_token=True if model_args.use_auth_token else None,
-                model_args=model_args
-            )
-            if model_args.do_mlm:
-                pretrained_model = BertForPreTraining.from_pretrained(model_args.model_name_or_path)
-                model.lm_head.load_state_dict(pretrained_model.cls.predictions.state_dict())
-        else:
-            raise NotImplementedError
-    else:
-        raise NotImplementedError
-        logger.info("Training new model from scratch")
-        model = AutoModelForMaskedLM.from_config(config)
-
+    model_class = getattr(importlib.import_module(f"..{model_args.model_class}", package="simcse.models.subpkg"), model_args.model_class)
+    model_class_args = {}
+    for k in model_args.model_class_args:
+        model_class_args[k] = eval(k)
+    model = model_class.from_pretrained(
+        model_args.model_name_or_path,
+        **model_class_args,
+    )
     model.resize_token_embeddings(len(tokenizer))
+    if model_args.do_mlm:
+        pretrained_model = BertForPreTraining.from_pretrained(model_args.model_name_or_path)
+        model.lm_head.load_state_dict(pretrained_model.cls.predictions.state_dict())
 
     # Prepare features
     column_names = datasets["train"].column_names
@@ -190,49 +157,11 @@ def main():
         datasets = Dataset.from_dict(new_dataset_dict)
         sent2_cname = None
         sent1_cname = sent0_cname
-    def prepare_features(examples):
-        # padding = longest (default)
-        #   If no sentence in the batch exceed the max length, then use
-        #   the max sentence length in the batch, otherwise use the 
-        #   max sentence length in the argument and truncate those that
-        #   exceed the max length.
-        # padding = max_length (when pad_to_max_length, for pressure test)
-        #   All sentences are padded/truncated to data_args.max_seq_length.
-        total = len(examples[sent0_cname])
-
-        # Avoid "None" fields 
-        for idx in range(total):
-            if examples[sent0_cname][idx] is None:
-                examples[sent0_cname][idx] = " "
-            if examples[sent1_cname][idx] is None:
-                examples[sent1_cname][idx] = " "
-        
-        sentences = examples[sent0_cname] + examples[sent1_cname]
-
-        # If hard negative exists
-        if sent2_cname is not None:
-            for idx in range(total):
-                if examples[sent2_cname][idx] is None:
-                    examples[sent2_cname][idx] = " "
-            sentences += examples[sent2_cname]
-
-        sent_features = tokenizer(
-            sentences,
-            max_length=data_args.max_seq_length,
-            truncation=True,
-            padding="max_length" if data_args.pad_to_max_length else False,
-        )
-
-        features = {}
-        if sent2_cname is not None:
-            for key in sent_features:
-                features[key] = [[sent_features[key][i], sent_features[key][i+total], sent_features[key][i+total*2]] for i in range(total)]
-        else:
-            for key in sent_features:
-                features[key] = [[sent_features[key][i], sent_features[key][i+total]] for i in range(total)]
-            
-        return features
-
+    get_map_function = getattr(importlib.import_module(f"..{data_args.dataset_map_function}", package="simcse.dataset_map_functions.subpkg"), data_args.dataset_map_function)
+    dataset_map_function_args={}
+    for k in data_args.dataset_map_function_args:
+        dataset_map_function_args[k] = eval(k)
+    prepare_features = get_map_function(**dataset_map_function_args)
     if training_args.do_train:
         train_dataset = datasets.map(
             prepare_features,
@@ -244,93 +173,37 @@ def main():
         )
 
     # Data collator
-    @dataclass
-    class OurDataCollatorWithPadding:
-
-        tokenizer: PreTrainedTokenizerBase
-        padding: Union[bool, str, PaddingStrategy] = True
-        max_length: Optional[int] = None
-        pad_to_multiple_of: Optional[int] = None
-        mlm: bool = True
-        mlm_probability: float = data_args.mlm_probability
-
-        def __call__(self, features: List[Dict[str, Union[List[int], List[List[int]], torch.Tensor]]]) -> Dict[str, torch.Tensor]:
-            special_keys = ['input_ids', 'attention_mask', 'token_type_ids', 'mlm_input_ids', 'mlm_labels']
-            bs = len(features)
-            if bs > 0:
-                num_sent = len(features[0]['input_ids'])
-            else:
-                return
-            flat_features = []
-            for feature in features:
-                for i in range(num_sent):
-                    flat_features.append({k: feature[k][i] if k in special_keys else feature[k] for k in feature})
-
-            batch = self.tokenizer.pad(
-                flat_features,
-                padding=self.padding,
-                max_length=self.max_length,
-                pad_to_multiple_of=self.pad_to_multiple_of,
-                return_tensors="pt",
-            )
-            if model_args.do_mlm:
-                batch["mlm_input_ids"], batch["mlm_labels"] = self.mask_tokens(batch["input_ids"])
-
-            batch = {k: batch[k].view(bs, num_sent, -1) if k in special_keys else batch[k].view(bs, num_sent, -1)[:, 0] for k in batch}
-
-            if "label" in batch:
-                batch["labels"] = batch["label"]
-                del batch["label"]
-            if "label_ids" in batch:
-                batch["labels"] = batch["label_ids"]
-                del batch["label_ids"]
-
-            return batch
-        
-        def mask_tokens(
-            self, inputs: torch.Tensor, special_tokens_mask: Optional[torch.Tensor] = None
-        ) -> Tuple[torch.Tensor, torch.Tensor]:
-            """
-            Prepare masked tokens inputs/labels for masked language modeling: 80% MASK, 10% random, 10% original.
-            """
-            inputs = inputs.clone()
-            labels = inputs.clone()
-            # We sample a few tokens in each sequence for MLM training (with probability `self.mlm_probability`)
-            probability_matrix = torch.full(labels.shape, self.mlm_probability)
-            if special_tokens_mask is None:
-                special_tokens_mask = [
-                    self.tokenizer.get_special_tokens_mask(val, already_has_special_tokens=True) for val in labels.tolist()
-                ]
-                special_tokens_mask = torch.tensor(special_tokens_mask, dtype=torch.bool)
-            else:
-                special_tokens_mask = special_tokens_mask.bool()
-
-            probability_matrix.masked_fill_(special_tokens_mask, value=0.0)
-            masked_indices = torch.bernoulli(probability_matrix).bool()
-            labels[~masked_indices] = -100  # We only compute loss on masked tokens
-
-            # 80% of the time, we replace masked input tokens with tokenizer.mask_token ([MASK])
-            indices_replaced = torch.bernoulli(torch.full(labels.shape, 0.8)).bool() & masked_indices
-            inputs[indices_replaced] = self.tokenizer.convert_tokens_to_ids(self.tokenizer.mask_token)
-
-            # 10% of the time, we replace masked input tokens with random word
-            indices_random = torch.bernoulli(torch.full(labels.shape, 0.5)).bool() & masked_indices & ~indices_replaced
-            random_words = torch.randint(len(self.tokenizer), labels.shape, dtype=torch.long)
-            inputs[indices_random] = random_words[indices_random]
-
-            # The rest of the time (10% of the time) we keep the masked input tokens unchanged
-            return inputs, labels
-
-    data_collator = default_data_collator if data_args.pad_to_max_length else OurDataCollatorWithPadding(tokenizer)
-
-    trainer = CLTrainer(
-        model=model,
-        args=training_args,
-        train_dataset=train_dataset if training_args.do_train else None,
-        tokenizer=tokenizer,
-        data_collator=data_collator,
-    )
-    trainer.model_args = model_args
+    if data_args.collator != "default":
+        get_collator = getattr(importlib.import_module(f"..{data_args.collator}", package="simcse.collators.subpkg"), data_args.collator)
+        collator_args = {}
+        for k in data_args.collator_args:
+            collator_args[k] = eval(k)
+        data_collator = get_collator(**collator_args)
+    else: 
+        data_collator = default_data_collator
+    trainer_class = getattr(importlib.import_module(f"..{trainer_args.trainer_class}", package="simcse.trainers.subpkg"), trainer_args.trainer_class)
+    if trainer_args.optimizer_args.custom_optimizer:
+        optimizer_args = trainer_args.optimizer_args
+        optimizer_class = eval(optimizer_args.optimizer_class)
+        num_update_steps_per_epoch = train_dataset.num_rows // training_args.gradient_accumulation_steps
+        num_update_steps_per_epoch = max(num_update_steps_per_epoch, 1)
+        max_steps = math.ceil(training_args.num_train_epochs * num_update_steps_per_epoch)
+        optimizer_list = []
+        for param_and_lr in optimizer_args.optimizer_class_args:
+            tmp_dict = {}
+            for k in param_and_lr:
+                tmp_dict[k] = eval(str(param_and_lr[k]))
+            optimizer_list.append(tmp_dict)
+        optimizer = optimizer_class(optimizer_list)
+        get_scheduler = eval(optimizer_args.scheduler)
+        scheduler = get_scheduler(optimizer, optimizer_args.scheduler_warmup_steps, max_steps)
+        optimizers = (optimizer, scheduler)
+    train_dataset = train_dataset if training_args.do_train else None
+    args = training_args # note that this is hard to interpret because of code style
+    trainer_class_args = {}
+    for k in trainer_args.trainer_class_args:
+        trainer_class_args[k] = eval(k)
+    trainer = trainer_class(**trainer_class_args)
 
     # Training
     if training_args.do_train:

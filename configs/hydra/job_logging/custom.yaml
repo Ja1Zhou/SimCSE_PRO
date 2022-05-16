@@ -1,0 +1,19 @@
+version: 1
+formatters:
+  custom: 
+    format: "[%(asctime)s|%(filename)s|%(levelname)s] %(message)s"
+    datefmt: "%a %b %d %H:%M:%S %Y"
+handlers:
+  console:
+    class: logging.StreamHandler
+    formatter: custom
+  file:
+    class: logging.FileHandler
+    formatter: custom
+    filename: "${hydra.job.name}.log"
+    mode: "w"
+root:
+  level: DEBUG
+  handlers: [console, file]
+
+disable_existing_loggers: false

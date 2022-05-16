@@ -1,0 +1,89 @@
+model_args:
+  learning_style: unsup
+  model_name_or_path: bert-base-uncased
+  temp: 0.05
+  pooler_type: avg
+  hard_negative_weight: 0
+  do_mlm: false
+  mlm_weight: 0.1
+  mlp_only_train: false
+  model_class: BertForCL
+  model_class_args:
+  - config
+  - model_args
+  model_forward_args:
+  - output_hidden_states
+  - return_dict
+  - sent_emb
+  eval_transfer: false
+data_args:
+  train_file: data/wiki1m_for_simcse.txt
+  max_seq_length: 32
+  pad_to_max_length: false
+  mlm_probability: 0.15
+  force_unsup: false
+  batch_size: 128
+  preprocessing_num_workers: 4
+  overwrite_cache: false
+  dataset_map_function: default
+  dataset_map_function_args:
+    - tokenizer
+    - data_args
+    - sent0_cname
+    - sent1_cname
+    - sent2_cname
+  custom_collator: true
+  collator: get_default_custom
+  collator_args:
+    - tokenizer
+    - model_args
+    - data_args
+training_args:
+  output_dir: result/unsup-bert
+  num_train_epochs: 1
+  per_device_train_batch_size: 64
+  learning_rate: 3.e-5
+  evaluation_strategy: steps
+  eval_steps: 125
+  logging_steps: ${training_args.eval_steps}
+  metric_for_best_model: stsb_spearman
+  load_best_model_at_end: true
+  overwrite_output_dir: true
+  do_train: true
+  do_eval: true
+  fp16: true
+trainer_args:
+  optimizer_args:
+    custom_optimizer: true
+    optimizer_class: AdamW
+    optimizer_class_args:
+      - params: model.bert.parameters()
+        lr: "${training_args.learning_rate}"
+    scheduler: get_linear_schedule_with_warmup
+    scheduler_warmup_steps: 0
+  trainer_class: CLTrainer
+  trainer_class_args:
+    - model
+    - args
+    - train_dataset
+    - tokenizer
+    - data_collator
+    - optimizers
+    - model_args
+    - trainer_args
+  batcher_function: default_batcher
+  batcher_function_args:
+    - tokenizer
+    - model_args
+    - training_args
+    - model
+  
+defaults:
+  - _self_
+  - override hydra/job_logging: custom
+hydra:
+  job:
+    name: "${model_args.learning_style}-${model_args.model_name_or_path}"
+  run:
+    dir: .
+  output_subdir: "${training_args.output_dir}/hydra_output"
