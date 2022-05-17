@@ -15,6 +15,7 @@ model_args:
   - output_hidden_states
   - return_dict
   - sent_emb
+  forward_function: default_forward
   eval_transfer: false
 data_args:
   train_file: data/wiki1m_for_simcse.txt
