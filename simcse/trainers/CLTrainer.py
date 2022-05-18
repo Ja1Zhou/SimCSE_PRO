@@ -506,6 +506,9 @@ class CLTrainer(Trainer):
                 f"Loading best model from {self.state.best_model_checkpoint} (score: {self.state.best_metric})."
             )
             if isinstance(self.model, PreTrainedModel):
+                model_class_args = {}
+                for k in self.model.model_args.model_class_args:
+                    model_class_args[k] = eval("self.model."+k)
                 self.model = self.model.from_pretrained(self.state.best_model_checkpoint, model_args=self.model_args)
                 if not self.is_model_parallel:
                     self.model = self.model.to(self.args.device)

@@ -21,11 +21,8 @@ MODEL_CONFIG_CLASSES = list(MODEL_FOR_MASKED_LM_MAPPING.keys())
 MODEL_TYPES = tuple(conf.model_type for conf in MODEL_CONFIG_CLASSES)
 @hydra.main(config_path="configs", config_name="default")
 def main(cfg):
-    # ModelArgs = namedtuple("ModelArgs", cfg.model_args.keys(),defaults=[None])
     model_args = SimpleNamespace(**cfg.model_args)
-    # DataArgs = namedtuple("DataArgs", cfg.data_args.keys(),defaults=[None])
     data_args = SimpleNamespace(**cfg.data_args)
-    # TrainerArgs = namedtuple("TrainerArgs", cfg.trainer_args.keys(),defaults=[None])
     trainer_args = SimpleNamespace(**cfg.trainer_args)
     training_args = TrainingArguments(**cfg.training_args)
     if (

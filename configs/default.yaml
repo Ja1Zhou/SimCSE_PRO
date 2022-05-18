@@ -16,6 +16,7 @@ model_args:
   - return_dict
   - sent_emb
   forward_function: default_forward
+  init_function: default_init
   eval_transfer: false
 data_args:
   train_file: data/wiki1m_for_simcse.txt
@@ -84,7 +85,7 @@ defaults:
   - override hydra/job_logging: custom
 hydra:
   job:
-    name: "${model_args.learning_style}-${model_args.model_name_or_path}"
+    name: "${model_args.learning_style}-${model_args.model_name_or_path}-${model_args.pooler_type}-${model_args.forward_function}"
   run:
     dir: .
   output_subdir: "${training_args.output_dir}/hydra_output"

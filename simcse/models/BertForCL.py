@@ -66,23 +66,6 @@ class Pooler(nn.Module):
             return pooled_result
         else:
             raise NotImplementedError
-
-
-def cl_init(cls, config):
-    """
-    Contrastive learning class init function.
-    """
-    cls.pooler_type = cls.model_args.pooler_type
-    cls.pooler = Pooler(cls.model_args.pooler_type)
-    if cls.model_args.pooler_type == "cls":
-        cls.mlp = MLPLayer(config)
-    cls.sim = Similarity(temp=cls.model_args.temp)
-    cls.init_weights()
-
-
-
-
-
 class BertForCL(BertPreTrainedModel):
     _keys_to_ignore_on_load_missing = [r"position_ids"]
 
@@ -93,8 +76,13 @@ class BertForCL(BertPreTrainedModel):
 
         if self.model_args.do_mlm:
             self.lm_head = BertLMPredictionHead(config)
-
-        cl_init(self, config)
+        self.pooler_type = self.model_args.pooler_type
+        self.pooler = Pooler(self.model_args.pooler_type)
+        if self.model_args.pooler_type == "cls":
+            self.mlp = MLPLayer(config)
+        self.sim = Similarity(temp=self.model_args.temp)
+        init_function = getattr(importlib.import_module(f"..{self.model_args.init_function}", package="simcse.models.init_functions.subpkg"), self.model_args.init_function)
+        init_function(self, config)
         self.train_forward_function = getattr(importlib.import_module(f"..{self.model_args.forward_function}", package="simcse.models.forward_functions.subpkg"), "train_forward_function")
         self.inference_forward_function = getattr(importlib.import_module(f"..{self.model_args.forward_function}", package="simcse.models.forward_functions.subpkg"), "inference_forward_function")
     def forward(self,
