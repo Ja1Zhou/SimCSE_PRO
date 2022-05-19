@@ -119,7 +119,7 @@ def train_forward_function(cls,
         rescaled_negative_vectors = (anchor_vectors + rescaler * (negative_vectors - anchor_vectors)).clone()
         # positive_distance < negative_distance -> batch_size * negative_number
         to_change_index = (positive_distance < negative_distance).unsqueeze(0).expand(hidden_size, -1, -1)
-        negative_vectors[to_change_index] = rescaled_negative_vectors[to_change_index]
+        negative_vectors[to_change_index] = rescaled_negative_vectors[to_change_index].to(negative_vectors.dtype)
     negative_vectors = negative_vectors.permute(1,2,0) # batch_size, negative_number, hidden
     positive_vectors = positive_vectors.permute(1,2,0) # batch_size, 1, hidden
     z2 = torch.cat([positive_vectors, negative_vectors], dim=1) # batch_size, negative_number + 1, hidden

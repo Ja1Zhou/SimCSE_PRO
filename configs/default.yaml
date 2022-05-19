@@ -1,5 +1,4 @@
 model_args:
-  learning_style: unsup
   model_name_or_path: bert-base-uncased
   temp: 0.05
   pooler_type: avg
@@ -19,6 +18,7 @@ model_args:
   init_function: default_init
   eval_transfer: false
 data_args:
+  learning_style: unsup
   train_file: data/wiki1m_for_simcse.txt
   max_seq_length: 32
   pad_to_max_length: false
@@ -41,7 +41,7 @@ data_args:
     - model_args
     - data_args
 training_args:
-  output_dir: "result/${model_args.learning_style}-${model_args.model_name_or_path}-${model_args.pooler_type}-${model_args.model_class}-${model_args.forward_function}"
+  output_dir: "result/${data_args.learning_style}-${model_args.model_name_or_path}-${model_args.pooler_type}-${model_args.model_class}-${model_args.forward_function}"
   num_train_epochs: 1
   per_device_train_batch_size: 64
   learning_rate: 3.e-5
@@ -85,7 +85,7 @@ defaults:
   - override hydra/job_logging: custom
 hydra:
   job:
-    name: "${model_args.learning_style}-${model_args.model_name_or_path}-${model_args.pooler_type}-${model_args.model_class}-${model_args.forward_function}"
+    name: "${data_args.learning_style}-${model_args.model_name_or_path}-${model_args.pooler_type}-${model_args.model_class}-${model_args.forward_function}"
   run:
     dir: .
   output_subdir: "${training_args.output_dir}/hydra_output"

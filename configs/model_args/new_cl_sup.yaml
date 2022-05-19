@@ -1,0 +1,3 @@
+pooler_type: cls
+forward_function: new_cl
+init_function: new_cl_init

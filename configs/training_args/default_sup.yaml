@@ -1,0 +1,3 @@
+num_train_epochs: 3
+per_device_train_batch_size: 256
+learning_rate: 5.e-4

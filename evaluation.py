@@ -5,6 +5,7 @@ import importlib
 from types import SimpleNamespace
 # Set up logger
 logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 # Set PATHs
 PATH_TO_SENTEVAL = './SentEval'
 PATH_TO_DATA = './SentEval/data'
@@ -17,7 +18,7 @@ def print_table(task_names, scores):
     tb = PrettyTable()
     tb.field_names = task_names
     tb.add_row(scores)
-    print(tb)
+    logger.info("\n"+str(tb))
 @hydra.main(config_path="configs", config_name="default_eval")
 def main(cfg):
     # parser = argparse.ArgumentParser()
@@ -103,7 +104,7 @@ def main(cfg):
     
     # Print evaluation results
     if eval_args.mode == 'dev':
-        print("------ %s ------" % (eval_args.mode))
+        logger.info("------ %s ------" % (eval_args.mode))
 
         task_names = []
         scores = []
@@ -128,7 +129,7 @@ def main(cfg):
         print_table(task_names, scores)
 
     elif eval_args.mode == 'test' or eval_args.mode == 'fasttest':
-        print("------ %s ------" % (eval_args.mode))
+        logger.info("------ %s ------" % (eval_args.mode))
 
         task_names = []
         scores = []

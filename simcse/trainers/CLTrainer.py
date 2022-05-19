@@ -66,6 +66,23 @@ class CLTrainer(Trainer):
         self.model_args = kwargs.pop("model_args", None)
         self.trainer_args = kwargs.pop("trainer_args", None)
         super().__init__(**kwargs)
+    def log(self, logs: Dict[str, float]) -> None:
+        """
+        Log :obj:`logs` on the various objects watching training.
+
+        Subclass and override this method to inject custom behavior.
+
+        Args:
+            logs (:obj:`Dict[str, float]`):
+                The values to log.
+        """
+        if self.state.epoch is not None:
+            logs["epoch"] = round(self.state.epoch, 2)
+
+        self.control = self.callback_handler.on_log(self.args, self.state, self.control, logs)
+        output = {**logs, **{"step": self.state.global_step}}
+        self.state.log_history.append(output)
+        logger.info(logs)
     def evaluate(
         self,
         eval_dataset: Optional[Dataset] = None,
