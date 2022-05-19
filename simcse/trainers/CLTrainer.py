@@ -509,7 +509,7 @@ class CLTrainer(Trainer):
                 model_class_args = {}
                 for k in self.model.model_args.model_class_args:
                     model_class_args[k] = eval("self.model."+k)
-                self.model = self.model.from_pretrained(self.state.best_model_checkpoint, model_args=self.model_args)
+                self.model = self.model.from_pretrained(self.state.best_model_checkpoint, **model_class_args)
                 if not self.is_model_parallel:
                     self.model = self.model.to(self.args.device)
             else:

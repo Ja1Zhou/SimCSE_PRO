@@ -79,13 +79,15 @@ trainer_args:
     - model_args
     - training_args
     - model
-  
+eval_args:
+  task_set: sts
+  mode: test
 defaults:
   - _self_
   - override hydra/job_logging: custom
 hydra:
   job:
-    name: "${model_args.learning_style}-${model_args.model_name_or_path}-${model_args.pooler_type}-${model_args.model_class}-${model_args.forward_function}"
+    name: "logs/eval-${model_args.learning_style}-${model_args.model_name_or_path}-${model_args.pooler_type}-${model_args.forward_function}"
   run:
     dir: .
-  output_subdir: "${training_args.output_dir}/hydra_output"
+  output_subdir: null
