@@ -70,7 +70,7 @@ class Pooler(nn.Module):
         else:
             raise NotImplementedError
 
-class ZzjBertForCL(BertPreTrainedModel):
+class PromptBertForCL(BertPreTrainedModel):
     _keys_to_ignore_on_load_missing = [r"position_ids"]
 
     def __init__(self, config, *model_args, **model_kargs):
@@ -92,7 +92,7 @@ class ZzjBertForCL(BertPreTrainedModel):
         self.prompt_range = torch.arange(self.prompt_length,dtype=torch.long)
         self.prompt1 = nn.Embedding(self.prompt_length, self.config.num_hidden_layers * 2 * self.config.hidden_size)
         self.prompt2 = nn.Embedding(self.prompt_length, self.config.num_hidden_layers * 2 * self.config.hidden_size)        
-        self.dropout = nn.Dropout(self.model_args.prompt_dropout)
+        self.dropout = nn.Dropout(config.hidden_dropout_prob)
         if self.model_args.do_mlm:
             self.lm_head = BertLMPredictionHead(config)
         self.pooler_type = self.model_args.pooler_type

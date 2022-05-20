@@ -436,7 +436,7 @@ class CLTrainer(Trainer):
             inputs = None
             last_inputs = None
             for step, inputs in enumerate(epoch_iterator):
-                self.model.train()
+                model.train()
                 # Skip past any already trained steps if resuming training
                 if steps_trained_in_current_epoch > 0:
                     steps_trained_in_current_epoch -= 1

@@ -1,0 +1,12 @@
+pooler_type: mask
+model_class: PromptBertForCL
+model_class_args:
+  - config
+  - model_args
+  - mask_token_id
+init_function: new_cl_init
+forward_function: prompt_new_cl
+freeze_backbone: true
+inference_prompt: 1
+prefix_length: 1
+wrap_length: 1

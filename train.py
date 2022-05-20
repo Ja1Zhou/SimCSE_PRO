@@ -117,6 +117,7 @@ def main(cfg):
         )
     model_class = getattr(importlib.import_module(f"..{model_args.model_class}", package="simcse.models.subpkg"), model_args.model_class)
     model_class_args = {}
+    mask_token_id = tokenizer.mask_token_id
     for k in model_args.model_class_args:
         model_class_args[k] = eval(k)
     model = model_class.from_pretrained(

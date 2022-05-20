@@ -24,7 +24,7 @@ data_args:
   pad_to_max_length: false
   mlm_probability: 0.15
   force_unsup: false
-  batch_size: 128
+  batch_size: 128 # this is batch_size for data_map_function
   preprocessing_num_workers: 4
   overwrite_cache: false
   dataset_map_function: default

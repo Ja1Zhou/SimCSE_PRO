@@ -49,16 +49,17 @@ def main(cfg):
     eval_args = SimpleNamespace(**cfg.eval_args)
     training_args = TrainingArguments(**cfg.training_args)
     config = AutoConfig.from_pretrained(model_args.model_name_or_path)
+    tokenizer = AutoTokenizer.from_pretrained(training_args.output_dir)
     # Load transformers' model checkpoint
     model_class = getattr(importlib.import_module(f"..{model_args.model_class}", package="simcse.models.subpkg"), model_args.model_class)
     model_class_args = {}
+    mask_token_id = tokenizer.mask_token_id
     for k in model_args.model_class_args:
         model_class_args[k] = eval(k)
     model = model_class.from_pretrained(
         training_args.output_dir,
         **model_class_args,
     )
-    tokenizer = AutoTokenizer.from_pretrained(training_args.output_dir)
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model = model.to(device)
     model.eval()

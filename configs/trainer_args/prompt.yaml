@@ -1,0 +1,7 @@
+optimizer_args:
+  optimizer_class_args:
+  - params: model.prompt1.parameters()
+    lr: 3.e-3
+  - params: model.prompt2.parameters()
+    lr: 3.e-3
+batcher_function: prompt
