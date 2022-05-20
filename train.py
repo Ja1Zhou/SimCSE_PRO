@@ -25,12 +25,7 @@ def main(cfg):
     data_args = SimpleNamespace(**cfg.data_args)
     trainer_args = SimpleNamespace(**cfg.trainer_args)
     training_args = TrainingArguments(**cfg.training_args)
-    if (
-        os.path.exists(training_args.output_dir)
-        and os.listdir(training_args.output_dir)
-        and training_args.do_train
-        and not training_args.overwrite_output_dir
-    ):
+    if (os.path.exists(training_args.output_dir) and os.listdir(training_args.output_dir) and training_args.do_train and not training_args.overwrite_output_dir):
         raise ValueError(
             f"Output directory ({training_args.output_dir}) already exists and is not empty."
             "Use --overwrite_output_dir to overcome."

@@ -1,0 +1,6 @@
+model_class: SelfWeightedBertForCL
+freeze_backbone: true
+pooler_type: avg
+forward_function: self_weighted_new_cl
+add_entropy_loss: false
+init_function: new_cl_init

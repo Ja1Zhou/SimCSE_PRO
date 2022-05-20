@@ -1,0 +1,6 @@
+optimizer_args:
+  optimizer_class_args:
+    - params: model.bert.parameters()
+      lr: "${training_args.learning_rate}"   
+    - params: model.get_mask.parameters()
+      lr: ${training_args.learning_rate} * 10   
