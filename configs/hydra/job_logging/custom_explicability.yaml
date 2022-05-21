@@ -1,0 +1,14 @@
+version: 1
+formatters:
+  custom: 
+    format: "[%(asctime)s|%(filename)s|%(levelname)s] %(message)s"
+    datefmt: "%a %b %d %H:%M:%S %Y"
+handlers:
+  console:
+    class: logging.StreamHandler
+    formatter: custom
+root:
+  level: DEBUG
+  handlers: [console]
+
+disable_existing_loggers: false

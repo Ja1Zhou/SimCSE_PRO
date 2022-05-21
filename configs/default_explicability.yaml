@@ -6,7 +6,9 @@ model_args:
   do_mlm: false
   mlm_weight: 0.1
   mlp_only_train: false
-  model_class: BertForCL
+  freeze_backbone: false
+  add_entropy_loss: false
+  model_class: SelfWeightedBertForCL
   model_class_args:
     - config
     - model_args
@@ -14,7 +16,7 @@ model_args:
     - output_hidden_states
     - return_dict
     - sent_emb
-  forward_function: default_forward
+  forward_function: self_weighted
   init_function: default_init
   eval_transfer: false
 data_args:
@@ -24,7 +26,7 @@ data_args:
   pad_to_max_length: false
   mlm_probability: 0.15
   force_unsup: false
-  batch_size: 128 # this is batch_size for data_map_function
+  batch_size: 128
   preprocessing_num_workers: 4
   overwrite_cache: false
   dataset_map_function: default
@@ -60,13 +62,11 @@ trainer_args:
     optimizer_class: AdamW
     optimizer_class_args:
       - params: model.bert.parameters()
-        lr: "${training_args.learning_rate}"
+        lr: "${training_args.learning_rate}"   
+      - params: model.get_mask.parameters()
+        lr: ${training_args.learning_rate} * 10       
     scheduler: get_linear_schedule_with_warmup
     scheduler_warmup_steps: 0
-    scheduler_args:
-      - optimizer
-      - num_warmup_steps
-      - num_training_steps
   trainer_class: CLTrainer
   trainer_class_args:
     - model
@@ -83,13 +83,16 @@ trainer_args:
     - model_args
     - training_args
     - model
-  
+explicability_args:
+  input_sentences:
+    - "BERT is a model with absolute position embeddings so it’s usually advised to pad the inputs on the right rather than the left."
+  output_dir: explicability
 defaults:
   - _self_
-  - override hydra/job_logging: custom
+  - override hydra/job_logging: custom_explicability
 hydra:
   job:
-    name: "${data_args.learning_style}-${model_args.model_name_or_path}-${model_args.pooler_type}-${model_args.model_class}-${model_args.forward_function}"
+    name: "logs/eval-${data_args.learning_style}-${model_args.model_name_or_path}-${model_args.pooler_type}-${model_args.forward_function}"
   run:
     dir: .
-  output_subdir: "${training_args.output_dir}/hydra_output"
+  output_subdir: null

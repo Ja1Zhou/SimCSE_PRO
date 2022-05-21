@@ -189,7 +189,12 @@ def main(cfg):
             optimizer_list.append(tmp_dict)
         optimizer = optimizer_class(optimizer_list)
         get_scheduler = eval(optimizer_args.scheduler)
-        scheduler = get_scheduler(optimizer, optimizer_args.scheduler_warmup_steps, max_steps)
+        scheduler_args = {}
+        num_warmup_steps = optimizer_args.scheduler_warmup_steps
+        num_training_steps = max_steps
+        for k in optimizer_args.scheduler_args:
+            scheduler_args[k] = eval(k)
+        scheduler = get_scheduler(**scheduler_args)
         optimizers = (optimizer, scheduler)
     train_dataset = train_dataset if training_args.do_train else None
     args = training_args # note that this is hard to interpret because of code style

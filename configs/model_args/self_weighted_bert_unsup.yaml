@@ -1,5 +1,5 @@
 model_class: SelfWeightedBertForCL
-freeze_backbone: true
+freeze_backbone: false
 pooler_type: avg
 forward_function: self_weighted
 add_entropy_loss: false

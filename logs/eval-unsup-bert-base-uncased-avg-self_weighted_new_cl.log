@@ -1,96 +1,96 @@
-[Fri May 20 21:55:43 2022|connectionpool.py|DEBUG] Starting new HTTPS connection (1): huggingface.co:443
-[Fri May 20 21:55:44 2022|connectionpool.py|DEBUG] https://huggingface.co:443 "HEAD /bert-base-uncased/resolve/main/config.json HTTP/1.1" 200 0
-[Fri May 20 21:55:53 2022|sts.py|DEBUG] ***** Transfer task : STS12 *****
+[Sat May 21 23:19:53 2022|connectionpool.py|DEBUG] Starting new HTTPS connection (1): huggingface.co:443
+[Sat May 21 23:19:55 2022|connectionpool.py|DEBUG] https://huggingface.co:443 "HEAD /bert-base-uncased/resolve/main/config.json HTTP/1.1" 200 0
+[Sat May 21 23:20:03 2022|sts.py|DEBUG] ***** Transfer task : STS12 *****
 
 
-[Fri May 20 21:55:54 2022|sts.py|DEBUG] MSRpar : pearson = 0.3216, spearman = 0.3705
-[Fri May 20 21:55:54 2022|sts.py|DEBUG] MSRvid : pearson = 0.6785, spearman = 0.6872
-[Fri May 20 21:55:55 2022|sts.py|DEBUG] SMTeuroparl : pearson = 0.4912, spearman = 0.6151
-[Fri May 20 21:55:55 2022|sts.py|DEBUG] surprise.OnWN : pearson = 0.6063, spearman = 0.6088
-[Fri May 20 21:55:55 2022|sts.py|DEBUG] surprise.SMTnews : pearson = 0.6259, spearman = 0.5687
-[Fri May 20 21:55:55 2022|sts.py|DEBUG] ALL : Pearson = 0.4646,             Spearman = 0.4653
-[Fri May 20 21:55:55 2022|sts.py|DEBUG] ALL (weighted average) : Pearson = 0.5405,             Spearman = 0.5660
-[Fri May 20 21:55:55 2022|sts.py|DEBUG] ALL (average) : Pearson = 0.5447,             Spearman = 0.5701
+[Sat May 21 23:20:04 2022|sts.py|DEBUG] MSRpar : pearson = 0.5815, spearman = 0.6137
+[Sat May 21 23:20:04 2022|sts.py|DEBUG] MSRvid : pearson = 0.8611, spearman = 0.8589
+[Sat May 21 23:20:04 2022|sts.py|DEBUG] SMTeuroparl : pearson = 0.5149, spearman = 0.6165
+[Sat May 21 23:20:05 2022|sts.py|DEBUG] surprise.OnWN : pearson = 0.7425, spearman = 0.7111
+[Sat May 21 23:20:05 2022|sts.py|DEBUG] surprise.SMTnews : pearson = 0.6470, spearman = 0.5987
+[Sat May 21 23:20:05 2022|sts.py|DEBUG] ALL : Pearson = 0.7215,             Spearman = 0.6608
+[Sat May 21 23:20:05 2022|sts.py|DEBUG] ALL (weighted average) : Pearson = 0.6864,             Spearman = 0.6949
+[Sat May 21 23:20:05 2022|sts.py|DEBUG] ALL (average) : Pearson = 0.6694,             Spearman = 0.6798
 
-[Fri May 20 21:55:55 2022|sts.py|DEBUG] ***** Transfer task : STS13 (-SMT) *****
-
-
-[Fri May 20 21:55:56 2022|sts.py|DEBUG] FNWN : pearson = 0.4298, spearman = 0.4454
-[Fri May 20 21:55:56 2022|sts.py|DEBUG] headlines : pearson = 0.6515, spearman = 0.6317
-[Fri May 20 21:55:56 2022|sts.py|DEBUG] OnWN : pearson = 0.6763, spearman = 0.6855
-[Fri May 20 21:55:56 2022|sts.py|DEBUG] ALL : Pearson = 0.6583,             Spearman = 0.6695
-[Fri May 20 21:55:56 2022|sts.py|DEBUG] ALL (weighted average) : Pearson = 0.6328,             Spearman = 0.6283
-[Fri May 20 21:55:56 2022|sts.py|DEBUG] ALL (average) : Pearson = 0.5859,             Spearman = 0.5875
-
-[Fri May 20 21:55:56 2022|sts.py|DEBUG] ***** Transfer task : STS14 *****
+[Sat May 21 23:20:05 2022|sts.py|DEBUG] ***** Transfer task : STS13 (-SMT) *****
 
 
-[Fri May 20 21:55:57 2022|sts.py|DEBUG] deft-forum : pearson = 0.3918, spearman = 0.3869
-[Fri May 20 21:55:57 2022|sts.py|DEBUG] deft-news : pearson = 0.7239, spearman = 0.6900
-[Fri May 20 21:55:58 2022|sts.py|DEBUG] headlines : pearson = 0.6222, spearman = 0.5620
-[Fri May 20 21:55:58 2022|sts.py|DEBUG] images : pearson = 0.6116, spearman = 0.5854
-[Fri May 20 21:55:59 2022|sts.py|DEBUG] OnWN : pearson = 0.7470, spearman = 0.7562
-[Fri May 20 21:55:59 2022|sts.py|DEBUG] tweet-news : pearson = 0.6349, spearman = 0.5668
-[Fri May 20 21:55:59 2022|sts.py|DEBUG] ALL : Pearson = 0.5848,             Spearman = 0.5405
-[Fri May 20 21:55:59 2022|sts.py|DEBUG] ALL (weighted average) : Pearson = 0.6281,             Spearman = 0.5957
-[Fri May 20 21:55:59 2022|sts.py|DEBUG] ALL (average) : Pearson = 0.6219,             Spearman = 0.5912
+[Sat May 21 23:20:05 2022|sts.py|DEBUG] FNWN : pearson = 0.5911, spearman = 0.6095
+[Sat May 21 23:20:06 2022|sts.py|DEBUG] headlines : pearson = 0.7857, spearman = 0.7871
+[Sat May 21 23:20:06 2022|sts.py|DEBUG] OnWN : pearson = 0.8265, spearman = 0.8131
+[Sat May 21 23:20:06 2022|sts.py|DEBUG] ALL : Pearson = 0.8002,             Spearman = 0.8054
+[Sat May 21 23:20:06 2022|sts.py|DEBUG] ALL (weighted average) : Pearson = 0.7764,             Spearman = 0.7744
+[Sat May 21 23:20:06 2022|sts.py|DEBUG] ALL (average) : Pearson = 0.7344,             Spearman = 0.7366
 
-[Fri May 20 21:55:59 2022|sts.py|DEBUG] ***** Transfer task : STS15 *****
+[Sat May 21 23:20:06 2022|sts.py|DEBUG] ***** Transfer task : STS14 *****
 
 
-[Fri May 20 21:55:59 2022|sts.py|DEBUG] answers-forums : pearson = 0.6391, spearman = 0.6450
-[Fri May 20 21:56:00 2022|sts.py|DEBUG] answers-students : pearson = 0.5570, spearman = 0.5505
-[Fri May 20 21:56:00 2022|sts.py|DEBUG] belief : pearson = 0.7380, spearman = 0.7557
-[Fri May 20 21:56:01 2022|sts.py|DEBUG] headlines : pearson = 0.6841, spearman = 0.6712
-[Fri May 20 21:56:01 2022|sts.py|DEBUG] images : pearson = 0.7347, spearman = 0.7452
-[Fri May 20 21:56:01 2022|sts.py|DEBUG] ALL : Pearson = 0.6494,             Spearman = 0.6612
-[Fri May 20 21:56:01 2022|sts.py|DEBUG] ALL (weighted average) : Pearson = 0.6661,             Spearman = 0.6668
-[Fri May 20 21:56:01 2022|sts.py|DEBUG] ALL (average) : Pearson = 0.6706,             Spearman = 0.6735
+[Sat May 21 23:20:06 2022|sts.py|DEBUG] deft-forum : pearson = 0.5632, spearman = 0.5537
+[Sat May 21 23:20:07 2022|sts.py|DEBUG] deft-news : pearson = 0.7763, spearman = 0.7440
+[Sat May 21 23:20:07 2022|sts.py|DEBUG] headlines : pearson = 0.7738, spearman = 0.7533
+[Sat May 21 23:20:08 2022|sts.py|DEBUG] images : pearson = 0.8131, spearman = 0.7824
+[Sat May 21 23:20:08 2022|sts.py|DEBUG] OnWN : pearson = 0.8546, spearman = 0.8442
+[Sat May 21 23:20:08 2022|sts.py|DEBUG] tweet-news : pearson = 0.7683, spearman = 0.7010
+[Sat May 21 23:20:08 2022|sts.py|DEBUG] ALL : Pearson = 0.7479,             Spearman = 0.7151
+[Sat May 21 23:20:08 2022|sts.py|DEBUG] ALL (weighted average) : Pearson = 0.7717,             Spearman = 0.7421
+[Sat May 21 23:20:08 2022|sts.py|DEBUG] ALL (average) : Pearson = 0.7582,             Spearman = 0.7298
 
-[Fri May 20 21:56:01 2022|sts.py|DEBUG] ***** Transfer task : STS16 *****
+[Sat May 21 23:20:08 2022|sts.py|DEBUG] ***** Transfer task : STS15 *****
 
 
-[Fri May 20 21:56:02 2022|sts.py|DEBUG] answer-answer : pearson = 0.5636, spearman = 0.5766
-[Fri May 20 21:56:02 2022|sts.py|DEBUG] headlines : pearson = 0.6538, spearman = 0.6603
-[Fri May 20 21:56:02 2022|sts.py|DEBUG] plagiarism : pearson = 0.7731, spearman = 0.7909
-[Fri May 20 21:56:02 2022|sts.py|DEBUG] postediting : pearson = 0.7874, spearman = 0.8109
-[Fri May 20 21:56:02 2022|sts.py|DEBUG] question-question : pearson = 0.6440, spearman = 0.6551
-[Fri May 20 21:56:02 2022|sts.py|DEBUG] ALL : Pearson = 0.6726,             Spearman = 0.6888
-[Fri May 20 21:56:02 2022|sts.py|DEBUG] ALL (weighted average) : Pearson = 0.6834,             Spearman = 0.6978
-[Fri May 20 21:56:02 2022|sts.py|DEBUG] ALL (average) : Pearson = 0.6844,             Spearman = 0.6988
+[Sat May 21 23:20:09 2022|sts.py|DEBUG] answers-forums : pearson = 0.7466, spearman = 0.7503
+[Sat May 21 23:20:09 2022|sts.py|DEBUG] answers-students : pearson = 0.7259, spearman = 0.7258
+[Sat May 21 23:20:10 2022|sts.py|DEBUG] belief : pearson = 0.8289, spearman = 0.8363
+[Sat May 21 23:20:10 2022|sts.py|DEBUG] headlines : pearson = 0.8070, spearman = 0.8100
+[Sat May 21 23:20:10 2022|sts.py|DEBUG] images : pearson = 0.8566, spearman = 0.8643
+[Sat May 21 23:20:10 2022|sts.py|DEBUG] ALL : Pearson = 0.8007,             Spearman = 0.8048
+[Sat May 21 23:20:10 2022|sts.py|DEBUG] ALL (weighted average) : Pearson = 0.7943,             Spearman = 0.7983
+[Sat May 21 23:20:10 2022|sts.py|DEBUG] ALL (average) : Pearson = 0.7930,             Spearman = 0.7973
 
-[Fri May 20 21:56:02 2022|sts.py|DEBUG] 
+[Sat May 21 23:20:10 2022|sts.py|DEBUG] ***** Transfer task : STS16 *****
+
+
+[Sat May 21 23:20:11 2022|sts.py|DEBUG] answer-answer : pearson = 0.7054, spearman = 0.7053
+[Sat May 21 23:20:11 2022|sts.py|DEBUG] headlines : pearson = 0.7872, spearman = 0.7909
+[Sat May 21 23:20:11 2022|sts.py|DEBUG] plagiarism : pearson = 0.8041, spearman = 0.8155
+[Sat May 21 23:20:11 2022|sts.py|DEBUG] postediting : pearson = 0.8647, spearman = 0.8759
+[Sat May 21 23:20:11 2022|sts.py|DEBUG] question-question : pearson = 0.7073, spearman = 0.7084
+[Sat May 21 23:20:11 2022|sts.py|DEBUG] ALL : Pearson = 0.7586,             Spearman = 0.7650
+[Sat May 21 23:20:11 2022|sts.py|DEBUG] ALL (weighted average) : Pearson = 0.7748,             Spearman = 0.7803
+[Sat May 21 23:20:11 2022|sts.py|DEBUG] ALL (average) : Pearson = 0.7737,             Spearman = 0.7792
+
+[Sat May 21 23:20:11 2022|sts.py|DEBUG] 
 
 ***** Transfer task : STSBenchmark*****
 
 
-[Fri May 20 21:56:07 2022|sts.py|DEBUG] train : pearson = 0.6287, spearman = 0.5978
-[Fri May 20 21:56:08 2022|sts.py|DEBUG] dev : pearson = 0.6884, spearman = 0.6958
-[Fri May 20 21:56:09 2022|sts.py|DEBUG] test : pearson = 0.6122, spearman = 0.6081
-[Fri May 20 21:56:09 2022|sts.py|DEBUG] ALL : Pearson = 0.6401,             Spearman = 0.6227
-[Fri May 20 21:56:09 2022|sts.py|DEBUG] ALL (weighted average) : Pearson = 0.6364,             Spearman = 0.6165
-[Fri May 20 21:56:09 2022|sts.py|DEBUG] ALL (average) : Pearson = 0.6431,             Spearman = 0.6339
+[Sat May 21 23:20:15 2022|sts.py|DEBUG] train : pearson = 0.7890, spearman = 0.7677
+[Sat May 21 23:20:17 2022|sts.py|DEBUG] dev : pearson = 0.8176, spearman = 0.8168
+[Sat May 21 23:20:18 2022|sts.py|DEBUG] test : pearson = 0.7802, spearman = 0.7705
+[Sat May 21 23:20:18 2022|sts.py|DEBUG] ALL : Pearson = 0.7935,             Spearman = 0.7803
+[Sat May 21 23:20:18 2022|sts.py|DEBUG] ALL (weighted average) : Pearson = 0.7925,             Spearman = 0.7767
+[Sat May 21 23:20:18 2022|sts.py|DEBUG] ALL (average) : Pearson = 0.7956,             Spearman = 0.7850
 
-[Fri May 20 21:56:09 2022|sts.py|DEBUG] 
+[Sat May 21 23:20:18 2022|sts.py|DEBUG] 
 
 ***** Transfer task : SICKRelatedness*****
 
 
-[Fri May 20 21:56:12 2022|sts.py|DEBUG] train : pearson = 0.6701, spearman = 0.6103
-[Fri May 20 21:56:13 2022|sts.py|DEBUG] dev : pearson = 0.6707, spearman = 0.6180
-[Fri May 20 21:56:16 2022|sts.py|DEBUG] test : pearson = 0.6660, spearman = 0.5975
-[Fri May 20 21:56:16 2022|sts.py|DEBUG] ALL : Pearson = 0.6680,             Spearman = 0.6041
-[Fri May 20 21:56:16 2022|sts.py|DEBUG] ALL (weighted average) : Pearson = 0.6681,             Spearman = 0.6043
-[Fri May 20 21:56:16 2022|sts.py|DEBUG] ALL (average) : Pearson = 0.6689,             Spearman = 0.6086
+[Sat May 21 23:20:21 2022|sts.py|DEBUG] train : pearson = 0.7675, spearman = 0.6798
+[Sat May 21 23:20:21 2022|sts.py|DEBUG] dev : pearson = 0.7696, spearman = 0.7005
+[Sat May 21 23:20:24 2022|sts.py|DEBUG] test : pearson = 0.7611, spearman = 0.6708
+[Sat May 21 23:20:24 2022|sts.py|DEBUG] ALL : Pearson = 0.7644,             Spearman = 0.6763
+[Sat May 21 23:20:24 2022|sts.py|DEBUG] ALL (weighted average) : Pearson = 0.7644,             Spearman = 0.6764
+[Sat May 21 23:20:24 2022|sts.py|DEBUG] ALL (average) : Pearson = 0.7660,             Spearman = 0.6837
 
-[Fri May 20 21:56:16 2022|evaluation.py|INFO] ------ test ------
-[Fri May 20 21:56:16 2022|evaluation.py|INFO] 
+[Sat May 21 23:20:24 2022|evaluation.py|INFO] ------ test ------
+[Sat May 21 23:20:24 2022|evaluation.py|INFO] 
 +-------+-------+-------+-------+-------+--------------+-----------------+-------+
 | STS12 | STS13 | STS14 | STS15 | STS16 | STSBenchmark | SICKRelatedness |  Avg. |
 +-------+-------+-------+-------+-------+--------------+-----------------+-------+
-| 46.53 | 66.95 | 54.05 | 66.12 | 68.88 |    60.81     |      59.75      | 60.44 |
+| 66.08 | 80.54 | 71.51 | 80.48 | 76.50 |    77.05     |      67.08      | 74.18 |
 +-------+-------+-------+-------+-------+--------------+-----------------+-------+
-[Fri May 20 21:56:16 2022|evaluation.py|INFO] 
+[Sat May 21 23:20:24 2022|evaluation.py|INFO] 
 +------+------+------+------+------+------+------+------+
 |  MR  |  CR  | SUBJ | MPQA | SST2 | TREC | MRPC | Avg. |
 +------+------+------+------+------+------+------+------+
