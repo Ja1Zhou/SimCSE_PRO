@@ -4,4 +4,8 @@ optimizer_args:
       lr: 3.e-3
     - params: model.prompt2.parameters()
       lr: 3.e-3
+    - params: model.get_mask.parameters()
+      lr: ${training_args.learning_rate} * 10 
+    - params: model.bert.parameters()
+      lr: "${training_args.learning_rate}"
 batcher_function: prompt

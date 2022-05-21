@@ -5,6 +5,7 @@ import torch.nn as nn
 def train_forward_function(
     cls,
     encoder,
+    masker,
     input_ids=None,
     attention_mask=None,
     token_type_ids=None,
@@ -17,6 +18,7 @@ def train_forward_function(
     return_dict=None,
     mlm_input_ids=None,
     mlm_labels=None,
+    sent_emb=False
 ):
     return_dict = return_dict if return_dict is not None else cls.config.use_return_dict
     # ori_input_ids = input_ids
@@ -34,10 +36,10 @@ def train_forward_function(
     attention_mask = attention_mask.view((-1, attention_mask.size(-1))) # (bs * num_sent len)
     if token_type_ids is not None:
         token_type_ids = token_type_ids.view((-1, token_type_ids.size(-1))) # (bs * num_sent, len)
-    # input is shape like the following:
-    # prefix-length + [X] + wrap-length + [MASK]
-    # position ids for x should plus prefix length
-    # position ids for x should plus prefix length and wrap length
+    # Get static embeddings
+    static_embeddings =  encoder.embeddings.word_embeddings(input_ids) # (bs * num_sent, len, dim)
+    static_embeddings = static_embeddings.view((batch_size, num_sent, -1, static_embeddings.size(-1))) # (bs, num_sent, len, dim)
+    # Get raw embeddings
     position_ids = torch.arange(input_ids.size(-1), dtype=torch.int, device=input_ids.device).unsqueeze(0).expand(input_ids.size(0), -1).clone().detach()
     position_ids = attention_mask.clone().detach() * cls.prefix_length + position_ids
     position_ids[where_mask[0],where_mask[1]] = position_ids[where_mask[0],where_mask[1]] + cls.wrap_length
@@ -47,7 +49,7 @@ def train_forward_function(
     past_key_values_1 = cls.prompt1(tmp_arange).view(input_ids.size(0),cls.n_layer*2,cls.n_head, cls.prompt_length,cls.n_embd)
     past_key_values_1 = cls.dropout(past_key_values_1)
     past_key_values_1 = past_key_values_1.transpose(0,1).split(2)
-    past_key_values_2 = cls.prompt2(tmp_arange).view(input_ids.size(0),cls.n_layer*2,cls.n_head, cls.prompt_length,cls.n_embd) if not cls.model_args.self_cl else cls.prompt1(tmp_arange).view(input_ids.size(0),cls.n_layer*2,cls.n_head, cls.prompt_length,cls.n_embd)
+    past_key_values_2 = cls.prompt2(tmp_arange).view(input_ids.size(0),cls.n_layer*2,cls.n_head, cls.prompt_length,cls.n_embd)
     past_key_values_2 = cls.dropout(past_key_values_2)
     past_key_values_2 = past_key_values_2.transpose(0,1).split(2)
 
@@ -77,11 +79,16 @@ def train_forward_function(
         past_key_values=past_key_values_2
     )   
     # last_hidden -> batch_size * num_sent , seq_len, hidden_size
-    pooler_output_1 = cls.pooler(attention_mask,outputs_1, where_mask)
-    pooler_output_1 = pooler_output_1.view(batch_size, num_sent, pooler_output_1.size(-1))
-    pooler_output_2 = cls.pooler(attention_mask,outputs_2, where_mask)
-    pooler_output_2 = pooler_output_2.view(batch_size, num_sent, pooler_output_2.size(-1))
     # should be [ batch*num_sent, len, hidden_size]
+
+    zzj_outputs_1 = outputs_1.last_hidden_state
+    # should be [ batch*num_sent, len, hidden_size]
+    zzj_outputs_1 = zzj_outputs_1.view((batch_size, num_sent, -1, zzj_outputs_1.size(-1))) # (bs, num_sent, len, dim)
+    all_embeddings_1 = torch.cat([static_embeddings, zzj_outputs_1],dim = -1) # (bs, num_sent, len, 2*dim) 
+    zzj_outputs_2 = outputs_2.last_hidden_state
+    # should be [ batch*num_sent, len, hidden_size]
+    zzj_outputs_2 = zzj_outputs_2.view((batch_size, num_sent, -1, zzj_outputs_2.size(-1))) # (bs, num_sent, len, dim)
+    all_embeddings_2 = torch.cat([static_embeddings, zzj_outputs_2],dim = -1) # (bs, num_sent, len, 2*dim) 
     # MLM auxiliary objective
     if mlm_input_ids is not None:
         mlm_input_ids = mlm_input_ids.view((-1, mlm_input_ids.size(-1)))
@@ -105,7 +112,20 @@ def train_forward_function(
     # if cls.pooler_type == "cls":
     #     pooler_output = cls.mlp(pooler_output)
     attention_mask = attention_mask.view(batch_size,num_sent,batch_len)
+    masked_1 = masker(all_embeddings_1, attention_mask, sent_emb) # (bs, num_sent, len)
+    masked_2 = masker(all_embeddings_2, attention_mask, sent_emb) # (bs, num_sent, len)
+    # if cls.model_args.add_entropy_loss:
+    #     #calculate entropy of masked
+    #     clone_mask = masked.clone()
+    #     clone_mask[clone_mask != 0] = torch.log(clone_mask[clone_mask != 0])
+    #     entropy = -torch.sum(masked * clone_mask, dim=-1)
+    #     entropy = entropy.mean()
+    zzj_outputs_1 = zzj_outputs_1 * masked_1.unsqueeze(-1).expand(-1,-1,-1,zzj_outputs_1.shape[-1]) # (bs, num_sent, len, dim)
     # Separate representation
+    pooler_output_1 = torch.sum(zzj_outputs_1, dim=-2) # (bs, num_sent, hidden_size)
+    zzj_outputs_2 = zzj_outputs_2 * masked_2.unsqueeze(-1).expand(-1,-1,-1,zzj_outputs_2.shape[-1]) # (bs, num_sent, len, dim)
+    # Separate representation
+    pooler_output_2 = torch.sum(zzj_outputs_2, dim=-2) # (bs, num_sent, hidden_size)
     z1, z2 = pooler_output_1[:,0], pooler_output_1[:,1]
     z1_, z2_ = pooler_output_2[:,0], pooler_output_2[:,1]
     # Hard negative
@@ -161,7 +181,7 @@ def train_forward_function(
         cos_sim_ = torch.cat([cos_sim_, z1_z3__cos], 1)
         inter_z1_z3 = cls.sim(z1.unsqueeze(1), z3_.unsqueeze(0))
         inter_cos = torch.cat([inter_cos, inter_z1_z3], 1)
-
+        
     labels = torch.arange(cos_sim.size(0)).long().to(cls.device)
     loss_fct = nn.CrossEntropyLoss()
 
@@ -177,6 +197,8 @@ def train_forward_function(
         inter_cos = inter_cos + weights
 
     loss = loss_fct(cos_sim, labels) + loss_fct(cos_sim_, labels) + loss_fct(inter_cos, labels)
+    # if cls.model_args.add_entropy_loss:
+    #     loss += cls.model_args.entropy_loss_weight * entropy
     # Calculate loss for MLM
     if mlm_outputs is not None and mlm_labels is not None:
         mlm_labels = mlm_labels.view(-1, mlm_labels.size(-1))
@@ -191,11 +213,12 @@ def train_forward_function(
         loss=loss,
         logits=cos_sim,
         hidden_states=outputs_1.hidden_states,
-        attentions=outputs_1.attentions,
+        attentions=masked_1
     )   
 def inference_forward_function(
     cls,
     encoder,
+    masker,
     input_ids=None,
     attention_mask=None,
     token_type_ids=None,
@@ -206,6 +229,7 @@ def inference_forward_function(
     output_attentions=None,
     output_hidden_states=None,
     return_dict=None,
+    sent_emb=True
 ):
     return_dict = return_dict if return_dict is not None else cls.config.use_return_dict
     # ori_input_ids = input_ids
@@ -214,6 +238,7 @@ def inference_forward_function(
     # batch_len = input_ids.size(-1)
     # Number of sentences in one instance
     # 2: pair instance; 3: pair instance with a hard negative
+    # num_sent = input_ids.size(1)
     where_mask = torch.nonzero(input_ids==cls.mask_token_id,as_tuple=True)
     assert len(where_mask[1]) == batch_size
     # attention_mask = attention_mask.view((-1, attention_mask.size(-1))) # (bs * num_sent len)
@@ -230,8 +255,6 @@ def inference_forward_function(
     tmp_arange = cls.prompt_range.unsqueeze(0).expand(input_ids.size(0), -1).to(input_ids.device)
     past_key_values_1 = cls.prompt1(tmp_arange) if cls.model_args.inference_prompt == 1 else cls.prompt2(tmp_arange)
     past_key_values_1 = past_key_values_1.view(input_ids.size(0),cls.n_layer*2,cls.n_head, cls.prompt_length,cls.n_embd)
-    # past_key_values_1 = cls.prompt2(tmp_arange).view(input_ids.size(0),cls.n_layer*2,cls.n_head, cls.prompt_length,cls.n_embd)
-    # past_key_values_1 = cls.dropout(past_key_values_1)
     past_key_values_1 = past_key_values_1.transpose(0,1).split(2)
 
     # mlm_outputs = None
@@ -241,7 +264,7 @@ def inference_forward_function(
     # if token_type_ids is not None:
         # token_type_ids = token_type_ids.view((-1, token_type_ids.size(-1))) # (bs * num_sent, len)
     # Get static embeddings
-    # static_embeddings =  encoder.embeddings.word_embeddings(input_ids) # (bs, len, dim)
+    static_embeddings =  encoder.embeddings.word_embeddings(input_ids) # (bs, len, dim)
     # static_embeddings = static_embeddings.view((batch_size, num_sent, -1, static_embeddings.size(-1))) # (bs, num_sent, len, dim)
     # Get raw embeddings
     outputs = encoder(
@@ -256,7 +279,10 @@ def inference_forward_function(
         return_dict=True,
         past_key_values=past_key_values_1
     )
+    zzj_outputs = outputs.last_hidden_state
     # should be [ batch, len, hidden_size]
+    # zzj_outputs = zzj_outputs.view((batch_size, num_sent, -1, zzj_outputs.size(-1))) # (bs, num_sent, len, dim)
+    all_embeddings = torch.cat([static_embeddings, zzj_outputs],dim = -1) # (bs, len, 2*dim) 
     # MLM auxiliary objective
     # if mlm_input_ids is not None:
     #     mlm_input_ids = mlm_input_ids.view((-1, mlm_input_ids.size(-1)))
@@ -273,19 +299,22 @@ def inference_forward_function(
     #     )
     
     # Pooling
-    pooler_output = cls.pooler(attention_mask, outputs, where_mask)
-    pooler_output = pooler_output.view((batch_size, pooler_output.size(-1))) # (bs, num_sent, hidden)
+    # pooler_output = cls.pooler(attention_mask, outputs)
+    # pooler_output = pooler_output.view((batch_size, num_sent, pooler_output.size(-1))) # (bs, num_sent, hidden)
     # If using "cls", we add an extra MLP layer
     # (same as BERT's original implementation) over the representation.
     # if cls.pooler_type == "cls":
     #     pooler_output = cls.mlp(pooler_output)
     # attention_mask = attention_mask.view(batch_size,num_sent,batch_len)
+    masked = masker(all_embeddings, attention_mask, sent_emb) # (bs, len)
+    zzj_outputs = zzj_outputs * masked.unsqueeze(-1).expand(-1,-1,zzj_outputs.shape[-1]) # (bs, len, dim)
     # Separate representation
+    zzj_outputs = torch.sum(zzj_outputs, dim=-2) # (bs, hidden_size)
 
     if not return_dict:
-        return (outputs[0], pooler_output) + outputs[2:]
+        return (outputs[0], zzj_outputs) + outputs[2:]
     return BaseModelOutputWithPoolingAndCrossAttentions(
-        pooler_output=pooler_output,
+        pooler_output=zzj_outputs,
         last_hidden_state=outputs.last_hidden_state,
-        hidden_states=past_key_values_1
+        hidden_states=masked
     )

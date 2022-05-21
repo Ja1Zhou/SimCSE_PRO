@@ -1,0 +1,12 @@
+model_class: SelfWeightedPromptBertForCL
+model_class_args:
+  - config
+  - model_args
+  - mask_token_id
+freeze_backbone: true
+pooler_type: avg
+forward_function: self_weighted_prompt
+add_entropy_loss: false
+inference_prompt: 1
+prefix_length: 1
+wrap_length: 1

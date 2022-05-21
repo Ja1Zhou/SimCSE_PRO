@@ -8,12 +8,12 @@ model_args:
   mlp_only_train: false
   model_class: BertForCL
   model_class_args:
-  - config
-  - model_args
+    - config
+    - model_args
   model_forward_args:
-  - output_hidden_states
-  - return_dict
-  - sent_emb
+    - output_hidden_states
+    - return_dict
+    - sent_emb
   forward_function: default_forward
   init_function: default_init
   eval_transfer: false
