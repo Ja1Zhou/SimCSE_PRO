@@ -1,0 +1,23 @@
+self-weighted-unsup-bert	&\textbf{66.82} 	&\textbf{83.00} 	&\textbf{74.25} 	&\textbf{80.77} 	&\textbf{78.66} 	&\textbf{78.06} 	&\textbf{68.19} 	&\textbf{75.68}  \\
+ablation-unsup-bert	&59.66 	&69.04 	&58.30 	&69.13 	&71.26 	&63.93 	&63.79 	&65.02 \\
+								\\
+self-weighted-sup-bert	&\textbf{75.40} 	&\textbf{84.35} 	&\textbf{80.26} 	&\textbf{85.70} 	&\textbf{81.09} 	&\textbf{84.89} 	&\textbf{80.35} 	&\textbf{81.72} \\
+ablation-sup-bert	&72.43 	&65.11 	&67.13 	&79.35 	&73.09 	&77.95 	&76.92 	&73.14 \\
+								\\
+self-weighted-unsup-roberta	&\textbf{68.68} 	&\textbf{81.66} 	&\textbf{73.64} 	&\textbf{82.33} 	&\textbf{79.53} 	&79.70 	&66.90 	&\textbf{76.06} \\
+ablation-unsup-roberta	&68.64 	&80.19 	&73.03 	&81.09 	&78.94 	&\textbf{79.74} 	&\textbf{67.04} 	&75.52 \\
+								\\
+self-weighted-sup-roberta	&\textbf{76.07} 	&85.39 	&80.31 	&\textbf{85.66} 	&82.66 	&\textbf{85.66} 	&\textbf{80.07} 	&\textbf{82.26} \\
+ablation-sup-roberta	&76.06 	&\textbf{85.56} 	&\textbf{80.43} 	&84.77 	&\textbf{82.82} 	&85.18 	&77.71 	&81.79 \\
+								\\
+finetune-unsup-bert	&\textbf{66.61} 	&\textbf{82.26} 	&\textbf{73.87} 	&\textbf{81.09} 	&\textbf{77.82} 	&\textbf{77.45} 	&71.06 	&\textbf{75.74} \\
+ablation-unsup-bert	&66.02 	&81.07 	&72.94 	&78.19 	&77.59 	&74.82 	&\textbf{71.22} 	&74.55 \\
+								\\
+finetune-sup-bert	&\textbf{75.78} 	&\textbf{84.73} 	&\textbf{80.14} 	&\textbf{85.61} 	&\textbf{80.90} 	&\textbf{84.58} 	&\textbf{80.22} 	&\textbf{81.71} \\
+ablation-sup-bert	&75.62 	&81.55 	&78.98 	&84.08 	&79.56 	&83.43 	&77.73 	&80.14 \\
+								\\
+finetune-unsup-roberta	&\textbf{69.43} 	&\textbf{82.34} 	&\textbf{74.33} 	&\textbf{82.38} 	&\textbf{80.34} 	&\textbf{80.59} 	&\textbf{69.38} 	&\textbf{76.97} \\
+ablation-unsup-roberta	&68.99 	&81.03 	&73.40 	&81.10 	&79.68 	&79.58 	&68.79 	&76.08 \\
+								\\
+finetune-sup-roberta	&\textbf{76.07} 	&\textbf{84.57} 	&80.37 	&\textbf{85.38} 	&\textbf{82.42} 	&84.90 	&\textbf{80.31} 	&\textbf{82.00} \\
+ablation-sup-roberta	&75.83 	&84.28 	&\textbf{80.66} 	&85.17 	&82.25 	&\textbf{84.94} 	&79.50 	&81.80 \\

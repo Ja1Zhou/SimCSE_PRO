@@ -1,0 +1,16 @@
+reproduce-unsup-bert	&\textbf{68.99} 	&82.87 	&73.33 	&79.40 	&77.32 	&75.63 	&69.58 	&75.30 \\
+self-weighted-unsup-bert	&66.82 	&\textbf{83.00} 	&\textbf{74.25} 	&80.77 	&\textbf{78.66} 	&\textbf{78.06} 	&68.19 	&75.68 \\
+finetune-unsup-bert	&66.61 	&82.26 	&73.87 	&\textbf{81.09} 	&77.82 	&77.45 	&\textbf{71.06} 	&\textbf{75.74} \\
+								\\
+reproduce-unsup-roberta	&68.89 	&81.22 	&72.69 	&81.36 	&\textbf{80.61} 	&80.30 	&67.61 	&76.10 \\
+self-weighted-unsup-roberta	&68.68 	&81.66 	&73.64 	&82.33 	&79.53 	&79.70 	&66.90 	&76.06 \\
+finetune-unsup-roberta	&\textbf{69.43} 	&\textbf{82.34} 	&\textbf{74.33} 	&\textbf{82.38} 	&80.34 	&\textbf{80.59} 	&\textbf{69.38} 	&\textbf{76.97} \\
+								
+								\\
+reproduce-sup-bert	&\textbf{76.58} 	&82.68 	&79.39 	&86.34 	&81.04 	&83.88 	&80.10 	&81.43 \\
+self-weighted-sup-bert	&75.40 	&84.35 	&\textbf{80.26} 	&\textbf{85.70} 	&\textbf{81.09} 	&\textbf{84.89} 	&\textbf{80.35} 	&\textbf{81.72} \\
+finetune-sup-bert	&75.78 	&\textbf{84.73} 	&80.14 	&85.61 	&80.90 	&84.58 	&80.22 	&81.71 \\
+								\\
+reproduce-sup-roberta	&\textbf{77.03} 	&82.77 	&79.75 	&84.39 	&\textbf{82.79} 	&83.70 	&78.32 	&81.25 \\
+self-weighted-sup-roberta	&76.07 	&\textbf{85.39} 	&80.31 	&\textbf{85.66} 	&82.66 	&\textbf{85.66} 	&80.07 	&\textbf{82.26} \\
+finetune-sup-roberta	&76.07 	&84.57 	&\textbf{80.37} 	&85.38 	&82.42 	&84.90 	&\textbf{80.31} 	&82.00 \\
