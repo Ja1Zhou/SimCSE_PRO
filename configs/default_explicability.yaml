@@ -86,6 +86,8 @@ trainer_args:
 explicability_args:
   input_sentences:
     - "BERT is a model with absolute position embeddings so it’s usually advised to pad the inputs on the right rather than the left."
+    - "The dog is running across the dirty path."
+    - "It is a paradox of the Victorians that they are both insular and throughout the empire, cosmopolitan."
   output_dir: explicability
 defaults:
   - _self_
