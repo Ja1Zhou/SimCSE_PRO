@@ -1,14 +1,25 @@
+# SimCSE_PRO
+
+This repo contains code for my undergrad thesis. 
+
+I refactored the code to decouple the training pipeline and provide support for highly customizable modules. This repo now supports:
+- `Custom Model Class`
+  - as well as `custom model init helper function` if needed
+- `Custom Model Forward Function`, including
+  - `Custom Training Forward Function`
+  - `Custom Inference Forward Function`
+- `Custom Dataset Mapping Function` for data preprocessing
+- `Custom Trainer`
+  - also `Custom Batcher Function` for STS evaluation process during training
+- `Custom Collator`
+
+The original SimCSE uses Huggingface Parser for passing arguments. In order to simplify bash scripts for training and evaluation, as well as to leverage hieracical configurations and automatic logging features, I switched to using [Hydra](https://github.com/facebookresearch/hydra). The evaluation code is modified accordingly so that the training script can be seamlessly used for evaluation. It would be really helpful if you are familiar with the original SimCSE repo. Below is the original SimCSE README.
+
 ## SimCSE: Simple Contrastive Learning of Sentence Embeddings
 
 This repository contains the code and pre-trained models for our paper [SimCSE: Simple Contrastive Learning of Sentence Embeddings](https://arxiv.org/abs/2104.08821).
 
 **************************** **Updates** ****************************
-
-<!-- Thanks for your interest in our repo! -->
-
-<!-- Probably you will think this as another *"empty"* repo of a preprint paper 🥱.
-Wait a minute! The authors are working day and night 💪, to make the code and models available, so you can explore our state-of-the-art sentence embeddings.
-We anticipate the code will be out * **in one week** *. -->
 
 <!-- * 4/26: SimCSE is now on [Gradio Web Demo](https://gradio.app/g/AK391/SimCSE) (Thanks [@AK391](https://github.com/AK391)!). Try it out! -->
 * 8/31: Our paper has been accepted to EMNLP! Please check out our [updated paper](https://arxiv.org/pdf/2104.08821.pdf) (with updated numbers and baselines). 
@@ -267,6 +278,18 @@ Please cite our paper if you use SimCSE in your work:
 }
 ```
 
+If you find this code useful, feel free to give credit~
+```bibtex
+@Misc{Zhejian2022SimCSE_PRO,
+  author =       {Zhejian Zhou},
+  title =        {SimCSE_PRO},
+  howpublished = {Github},
+  year =         {2022},
+  url =          {https://github.com/Ja1Zhou/SimCSE_PRO}
+}
+```
+
+
 ## SimCSE Elsewhere
 
 We thank the community's efforts for extending SimCSE!
@@ -274,3 +297,4 @@ We thank the community's efforts for extending SimCSE!
 - [Jianlin Su](https://github.com/bojone) has provided [a Chinese version of SimCSE](https://github.com/bojone/SimCSE).
 - [AK391](https://github.com/AK391) integrated to [Huggingface Spaces](https://huggingface.co/spaces) with [Gradio](https://github.com/gradio-app/gradio). See demo: [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/akhaliq/SimCSE)
 - [Nils Reimers](https://github.com/nreimers) has implemented a `sentence-transformers`-based [training code](https://colab.research.google.com/drive/1gAjXcI4uSxDE_IcvZdswFYVAo7XvPeoU?usp=sharing#scrollTo=UXUsikOc6oiB) for SimCSE.
+- [Zhejian](https://github.com/Ja1Zhou) has implemented [a modularized code for SimCSE](https://github.com/Ja1Zhou/SimCSE_PRO) based on [Hydra](https://github.com/facebookresearch/hydra).
